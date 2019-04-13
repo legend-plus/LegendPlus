@@ -1,0 +1,6 @@
+C:\Users\lukem\Documents\Github\LegendPlus\.mono\temp\obj\Tools\LegendPlus.csprojAssemblyReference.cache
+C:\Users\lukem\Documents\Github\LegendPlus\.mono\temp\obj\Tools\LegendPlus.csproj.CoreCompileInputs.cache
+C:\Users\lukem\Documents\Github\LegendPlus\.mono\temp\bin\Tools\LegendPlus.dll
+C:\Users\lukem\Documents\Github\LegendPlus\.mono\temp\bin\Tools\LegendPlus.pdb
+C:\Users\lukem\Documents\Github\LegendPlus\.mono\temp\obj\Tools\LegendPlus.dll
+C:\Users\lukem\Documents\Github\LegendPlus\.mono\temp\obj\Tools\LegendPlus.pdb
