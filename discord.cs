@@ -9,13 +9,16 @@ public class discord : Node2D
     public Discord.ActivityManager activityManager;
     public Discord.ApplicationManager appManager;
     public int loopCounter = 0;
-    public int loopUpdateRate = 60 * 5;
+    public int loopUpdateRate = 60 * 1;
     public string accessToken = "";
     public Random rng;
+
+    public bool running = true;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
+        //GetTree().SetAutoAcceptQuit(false);
         rng = new Random();
         const long CLIENT_ID = 499069912048992271;
         discord_instance = new Discord.Discord(CLIENT_ID, (System.UInt64)Discord.CreateFlags.Default);
@@ -35,58 +38,92 @@ public class discord : Node2D
 //  // Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(float delta)
 	{
-		discord_instance.RunCallbacks();
-        //UpdateActivity(discord);
-        loopCounter++;
-        if ((loopCounter % loopUpdateRate) == 0)
-        {
-            UpdateActivity();
+        if (running) {
+            discord_instance.RunCallbacks();
+            //UpdateActivity(discord);
+            loopCounter++;
+            if ((loopCounter % loopUpdateRate) == 0)
+            {
+                UpdateActivity();
+            }
         }
 	}
 	
-	private void _exit_tree()
+	private void _notification(int what)
     {
-        GD.Print("Thank you for playing Wing Commander.");
-        discord_instance.Dispose();
-    }
-	
-	public long UnixTimeNow()
-    {
-        var timeSpan = (System.DateTime.UtcNow - new System.DateTime(1970, 1, 1, 0, 0, 0));
-        return (long)timeSpan.TotalSeconds;
+        if (what == MainLoop.NotificationWmQuitRequest) {
+            GD.Print("Thank you for playing Wing Commander.");
+            discord_instance.Dispose();
+            running = false;
+            GetTree().Quit();
+        }
     }
 
     public void UpdateActivity()
     {
-        long now = UnixTimeNow();
-        var activity = new Discord.Activity
-        {
-            State = "Playing tester",
-            Details = "Playing Details",
-            Timestamps =
+        Discord.Activity activity;
+        long time = Convert.ToInt64(GetParent().Call("getStateTime"));
+        int state = (int) GetParent().Call("getState");
+        if (state == 0) {
+            activity = new Discord.Activity
             {
-                Start = now
-            },
-            Assets =
-            {
-                LargeImage = "better",
-                LargeText = "Large Image Text",
-                SmallImage = "zahra",
-                SmallText = "Small Image Text",
-            },
-            Party = {
-               Id = "ae488379-351d-4a4f-ad32-2b9b01c91657",
-               Size = {
-                    CurrentSize = rng.Next(1,8),
-                    MaxSize = rng.Next(8, 100),
+                Details = "In the Main Menu",
+                Assets =
+                {
+                    LargeImage = "better",
+                    LargeText = "Large Image Text",
+                    SmallImage = "zahra",
+                    SmallText = "Small Image Text",
                 },
-            },
-            Instance = false,
-        };
+                Instance = false,
+            };
+        } else if (state == 1) {
+            activity = new Discord.Activity
+            {
+                Details = "Connecting",
+                Timestamps =
+                {
+                    Start = time
+                },
+                Assets =
+                {
+                    LargeImage = "better",
+                    LargeText = "Large Image Text",
+                    SmallImage = "zahra",
+                    SmallText = "Small Image Text",
+                },
+                Instance = false,
+            };
+        } else {
+             activity = new Discord.Activity
+            {
+                State = "Doing Things",
+                Details = "Ingame",
+                Timestamps =
+                {
+                    Start = time
+                },
+                Assets =
+                {
+                    LargeImage = "better",
+                    LargeText = "Large Image Text",
+                    SmallImage = "zahra",
+                    SmallText = "Small Image Text",
+                },
+                Party = {
+                    Id = "ae488379-351d-4a4f-ad32-2b9b01c91657",
+                    Size = {
+                        CurrentSize = rng.Next(1,8),
+                        MaxSize = rng.Next(8, 100),
+                    },
+                },
+                Instance = false,
+            };
+        }
 
         activityManager.UpdateActivity(activity, result =>
         {
-            GD.Print("Update Activity {0}" + result.ToString());
+            //GD.Print("Update Activity {0}" + result.ToString());
 
             // Send an invite to another user for this activity.
             // Receiver should see an invite in their DM.
@@ -102,5 +139,10 @@ public class discord : Node2D
             //       }
             //   );
         });
+    }
+
+    public string getToken()
+    {
+        return accessToken;
     }
 }

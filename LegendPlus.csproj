@@ -49,6 +49,10 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+	<Compile Include="packets\*.cs" />
+	<Compile Include="packets\client\*.cs" />
+	<Compile Include="packets\server\*.cs" />
+    <Compile Include="Connection.cs" />
     <Compile Include="csharp\ActivityManager.cs" />
     <Compile Include="csharp\Constants.cs" />
     <Compile Include="csharp\Core.cs" />
@@ -57,7 +61,11 @@
     <Compile Include="csharp\StorageManager.cs" />
     <Compile Include="csharp\StoreManager.cs" />
     <Compile Include="discord.cs" />
+    <Compile Include="gameload.cs" />
+    <Compile Include="legend.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StartButton.cs" />
+    <Compile Include="StartControl.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
