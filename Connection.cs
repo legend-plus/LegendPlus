@@ -52,10 +52,12 @@ public class Connection : Node2D
         }
     }
 
-    public void getPackets() {
+    public void getPackets()
+    {
         //GD.Print("Get Packets");
         //GD.Print(wrapped_client.GetAvailablePacketCount());
-        if (connected && client.GetAvailableBytes() > 0) {
+        if (connected && client.GetAvailableBytes() > 0)
+        {
             //byte[] packet_data = wrapped_client.GetPacket();
             //UInt32 packetLength = BitConverter.ToUInt32(packet_data, 0);
             //short packetId = BitConverter.ToInt16(packet_data, 4);
@@ -64,18 +66,55 @@ public class Connection : Node2D
             var packetData = client.GetData((int) packetLength - 2);
             //var data = new List<byte>(packet_data).GetRange(6, packet_data.Length -6).ToArray();
             GD.Print(String.Format("Received packet, ID: {0} Length: {1}", packetId, packetLength));
-            //GD.Print(BitConverter.ToString(data));
+            //GD.Print(BitConverter.ToString( (byte[]) packetData[1]));
             var data = (byte[]) packetData[1];
             var packet = Packets.Packets.decode(packetId, data);
             
-            if (packet is PongPacket) {
+            if (packet is ReadyPacket)
+            {
+                ReadyPacket parsed_packet = (ReadyPacket) packet;
+                if (parsed_packet.code == 0) {
+                    string token = (string) GetParent().GetNode("Discord Integration").Call("getToken");
+                    var loginPacket = new LoginPacket(token);
+                    var loginData = Packets.Packets.encode(loginPacket);
+                    client.PutData(loginData);
+                }
+                else if (parsed_packet.code == 1)
+                {
+                    var requestWorldPacket = new RequestWorldPacket();
+                    var requestWorldData = Packets.Packets.encode(requestWorldPacket);
+                    client.PutData(requestWorldData);
+                    var loadingRes = GD.Load<PackedScene>("res://world.tscn");
+                    var node = loadingRes.Instance();
+                    node.SetName("World");
+                    GetParent().Call("setState", 2);
+                    GetParent().AddChild(node);
+                    GetParent().GetNode("GameLoader").Free();
+                }
+            }
+            else if (packet is PongPacket)
+            {
                 PongPacket parsed_packet = (PongPacket) packet;
                 GD.Print("Got pong of " + parsed_packet.message);
             }
-
-            var testPacket = new Packets.PingPacket("Hello There!");
-            var datas = Packets.Packets.encode(testPacket);
-            client.PutData(datas);
+            else if (packet is LoginResultPacket)
+            {
+                LoginResultPacket parsed_packet = (LoginResultPacket) packet;
+                GD.Print("Login Result: " + parsed_packet.responseCode.ToString() + " Name: " + parsed_packet.userId);
+                var joinGamePacket = new JoinGamePacket();
+                var joinGameData = Packets.Packets.encode(joinGamePacket);
+                client.PutData(joinGameData);
+                GD.Print(BitConverter.ToString(joinGameData));
+            }
+            else if (packet is WorldPacket)
+            {
+                WorldPacket parsed_packet = (WorldPacket) packet;
+                //GD.Print(parsed_packet.debug);
+                GetParent().GetNode("World").Call("loadWorld", new object[] {parsed_packet.worldData, parsed_packet.bumpData, parsed_packet.height, parsed_packet.width});
+            }
+            //var testPacket = new Packets.PingPacket("Hello There!");
+            //var datas = Packets.Packets.encode(testPacket);
+            //client.PutData(datas);
         } else {
             var testPacket = new Packets.PingPacket("Hello There!");
             var data = Packets.Packets.encode(testPacket);

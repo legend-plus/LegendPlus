@@ -1,23 +1,25 @@
+using System;
+
 namespace Packets
 {
     public class ReadyPacket : Packet {
         public override short id { get{ return 4;} }
         public override string name { get{ return "Ready";} }
 
-        public byte[] data;
+        public int code;
 
-        public ReadyPacket()
+        public ReadyPacket(int readyCode)
         {
-            data = new byte[] {};
+            code = readyCode;
         }
         public ReadyPacket(byte[] received_data)
         {
-            data = received_data;
+            code = received_data[0];
         }
 
         public override byte[] encode()
         {
-            return data;
+            return new byte[] {BitConverter.GetBytes(code)[0]};
         }
     }
 

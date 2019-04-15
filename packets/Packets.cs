@@ -6,10 +6,14 @@ namespace Packets
     public class Packets {
         static Dictionary<short, string> packet_names = new Dictionary<short, string>
         {
+            [-4] = "request_world_packet",
+            [-3] = "join_game_packet",
+            [-2] = "login_packet",
             [-1] = "ping_packet",
             [0] = "null_packet",
             [1] = "pong_packet",
-
+            [2] = "login_result_packet",
+            [3] = "world_packet",
             [4] = "ready_packet"
         };
 
@@ -17,12 +21,22 @@ namespace Packets
             string packet_name = packet_names[id];
             switch (packet_name)
             {
+                case "request_world_packet":
+                    return new RequestWorldPacket(data);
+                case "join_game_packet":
+                    return new JoinGamePacket(data);
+                case "login_packet":
+                    return new LoginPacket(data);
                 case "ping_packet":
                     return new PingPacket(data);
                 case "null_packet":
                     return new NullPacket(data);
                 case "pong_packet":
                     return new PongPacket(data);
+                case "login_result_packet":
+                    return new LoginResultPacket(data);
+                case "world_packet":
+                    return new WorldPacket(data);
                 case "ready_packet":
                     return new ReadyPacket(data);
                 default:

@@ -4,3 +4,6 @@ C:\Users\lukem\Documents\Github\LegendPlus\.mono\temp\bin\Tools\LegendPlus.dll
 C:\Users\lukem\Documents\Github\LegendPlus\.mono\temp\bin\Tools\LegendPlus.pdb
 C:\Users\lukem\Documents\Github\LegendPlus\.mono\temp\obj\Tools\LegendPlus.dll
 C:\Users\lukem\Documents\Github\LegendPlus\.mono\temp\obj\Tools\LegendPlus.pdb
+C:\Users\lukem\Documents\Github\LegendPlus\.mono\temp\bin\Tools\MiscUtil.dll
+C:\Users\lukem\Documents\Github\LegendPlus\.mono\temp\bin\Tools\MiscUtil.xml
+C:\Users\lukem\Documents\Github\LegendPlus\.mono\temp\obj\Tools\LegendPlus.csproj.CopyComplete
