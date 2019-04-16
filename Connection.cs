@@ -41,8 +41,7 @@ public class Connection : Node2D
             wrapped_client = new PacketPeerStream();
             wrapped_client.SetStreamPeer(client);
             var testPacket = new Packets.PingPacket("Hello There!");
-            var data = Packets.Packets.encode(testPacket);
-            GD.Print(BitConverter.ToString(data));
+            //sendPacket(testPacket);
             //wrapped_client.PutPacket(data);
             //GD.Print(client.PutData(data));
             connected = true;
@@ -76,14 +75,12 @@ public class Connection : Node2D
                 if (parsed_packet.code == 0) {
                     string token = (string) GetParent().GetNode("Discord Integration").Call("getToken");
                     var loginPacket = new LoginPacket(token);
-                    var loginData = Packets.Packets.encode(loginPacket);
-                    client.PutData(loginData);
+                    sendPacket(loginPacket);
                 }
                 else if (parsed_packet.code == 1)
                 {
                     var requestWorldPacket = new RequestWorldPacket();
-                    var requestWorldData = Packets.Packets.encode(requestWorldPacket);
-                    client.PutData(requestWorldData);
+                    sendPacket(requestWorldPacket);
                     var loadingRes = GD.Load<PackedScene>("res://world.tscn");
                     var node = loadingRes.Instance();
                     node.SetName("World");
@@ -102,9 +99,7 @@ public class Connection : Node2D
                 LoginResultPacket parsed_packet = (LoginResultPacket) packet;
                 GD.Print("Login Result: " + parsed_packet.responseCode.ToString() + " Name: " + parsed_packet.userId);
                 var joinGamePacket = new JoinGamePacket();
-                var joinGameData = Packets.Packets.encode(joinGamePacket);
-                client.PutData(joinGameData);
-                GD.Print(BitConverter.ToString(joinGameData));
+                sendPacket(joinGamePacket);
             }
             else if (packet is WorldPacket)
             {
@@ -112,15 +107,28 @@ public class Connection : Node2D
                 //GD.Print(parsed_packet.debug);
                 GetParent().GetNode("World").Call("loadWorld", new object[] {parsed_packet.worldData, parsed_packet.bumpData, parsed_packet.height, parsed_packet.width});
             }
-            //var testPacket = new Packets.PingPacket("Hello There!");
-            //var datas = Packets.Packets.encode(testPacket);
-            //client.PutData(datas);
+            else if (packet is PlayerPositionPacket)
+            {
+                PlayerPositionPacket parsed_packet = (PlayerPositionPacket) packet;
+                GetParent().GetNode("World").Call("move", new object[] {parsed_packet.x, parsed_packet.y});
+            }
         } else {
             var testPacket = new Packets.PingPacket("Hello There!");
-            var data = Packets.Packets.encode(testPacket);
-            //client.PutData(data);
-            //GD.Print(BitConverter.ToString(data));
+            //sendPacket(testPacket);
         }
+    }
+
+    public void sendPacket(Packet packet)
+    {
+        if (client.IsConnectedToHost())
+        {
+            var data = Packets.Packets.encode(packet);
+            client.PutData(data);
+        }
+    }
+
+    public StreamPeerTCP getClient() {
+        return client;
     }
 
 //  // Called every frame. 'delta' is the elapsed time since the previous frame.
