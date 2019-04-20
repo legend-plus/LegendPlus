@@ -6,18 +6,24 @@ namespace Packets
 
         public string accessToken;
 
+        public static DataType[] schema = {
+            new DataEndingString()
+        };
+
         public LoginPacket(string token)
         {
             accessToken = token;
         }
         public LoginPacket(byte[] received_data)
         {
-            accessToken = System.Text.Encoding.UTF8.GetString(received_data, 0, received_data.Length);
+            var decoded = Packets.decodeData(schema, received_data);
+            accessToken = (string) decoded[0];
         }
 
         public override byte[] encode()
         {
-            return System.Text.Encoding.UTF8.GetBytes(accessToken);
+            var output = Packets.encodeData(schema, new object[] {accessToken});
+            return output;
         }
     }
 

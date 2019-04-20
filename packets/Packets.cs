@@ -17,10 +17,63 @@ namespace Packets
             [2] = "login_result_packet",
             [3] = "world_packet",
             [4] = "ready_packet",
-            [5] = "player_position_packet"
+            [5] = "player_position_packet",
+            [6] = "disconnect_packet",
+            [7] = "chat_packet"
         };
 
-        public static Packet decode(short id, byte[] data) {
+        public static object[] decodeData(DataType[] schema, byte[] data)
+        {
+            var converter = new MiscUtil.Conversion.BigEndianBitConverter();
+            var output = new object[schema.Length];
+            var offset = 0;
+            for (var i = 0; i < schema.Length; i++)
+            {
+                if (schema[i] is DataVarying)
+                {
+                    var scheme = (DataVarying) schema[i];
+                    output[i] = scheme.decode(data, converter, offset);
+                    offset += scheme.getLength(data, converter, offset);
+                }
+                else
+                {
+                    output[i] = schema[i].decode(data, converter, offset);
+                    offset += schema[i].length;
+                }
+            }
+            return output;
+        }
+
+        public static byte[] encodeData(DataType[] schema, object[] data) {
+            var converter = new MiscUtil.Conversion.BigEndianBitConverter();
+            int dataLength = 0;
+            byte[][] dataParts = new byte[schema.Length][];
+            for (var i = 0; i < schema.Length; i++)
+            {
+                if (schema[i] is DataVarying)
+                {
+                    var scheme = (DataVarying) schema[i];
+                    var schemeData = scheme.encode(data[i], converter);
+                    dataLength += schemeData.Length;
+                    dataParts[i] = schemeData;
+                }
+                else
+                {
+                    dataLength += schema[i].length;
+                    dataParts[i] = schema[i].encode(data[i], converter);
+                }
+            }
+            var output = new byte[dataLength];
+            var offset = 0;
+            for (var i = 0; i < schema.Length; i++) {
+                System.Buffer.BlockCopy(dataParts[i], 0, output, offset, dataParts[i].Length);
+                offset += dataParts[i].Length;
+            }
+            return output;
+        }
+
+        public static Packet decode(short id, byte[] data)
+        {
             string packet_name = packet_names[id];
             switch (packet_name)
             {
@@ -48,6 +101,10 @@ namespace Packets
                     return new ReadyPacket(data);
                 case "player_position_packet":
                     return new PlayerPositionPacket(data);
+                case "disconnect_packet":
+                    return new DisconnectPacket(data);
+                case "chat_packet":
+                    return new ChatPacket(data);
                 default:
                     return new NullPacket(data);
             }

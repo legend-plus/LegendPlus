@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/right.png-09ee5c9a4ba3fe4ab8cb074c0cd51577.stex"
+path="res://.import/left_walk1.png-be86fa6673f8c8830b8a3e876452d3c6.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://characters/rowan/right.png"
-dest_files=[ "res://.import/right.png-09ee5c9a4ba3fe4ab8cb074c0cd51577.stex" ]
+source_file="res://characters/orange_cat/left_walk1.png"
+dest_files=[ "res://.import/left_walk1.png-be86fa6673f8c8830b8a3e876452d3c6.stex" ]
 
 [params]
 

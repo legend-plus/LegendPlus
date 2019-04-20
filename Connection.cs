@@ -81,12 +81,20 @@ public class Connection : Node2D
                 {
                     var requestWorldPacket = new RequestWorldPacket();
                     sendPacket(requestWorldPacket);
-                    var loadingRes = GD.Load<PackedScene>("res://world.tscn");
+                    var loadingRes = GD.Load<PackedScene>("res://scenes/world.tscn");
                     var node = loadingRes.Instance();
                     node.SetName("World");
                     GetParent().Call("setState", 2);
                     GetParent().AddChild(node);
                     GetParent().GetNode("GameLoader").Free();
+                    var playerSpriteScene = (PackedScene) node.Call("getSprite", "rowan");
+                    var playerSprite = (AnimatedSprite) playerSpriteScene.Instance();
+                    playerSprite.SetName("PlayerSprite");
+                    //playerSprite.SetAnimation("down");
+                    node.GetNode("Player").AddChild(playerSprite);
+                    //playerSprite.Position = ((KinematicBody2D) node.GetNode("Player")).Position;
+                    //playerSprite.Visible = true;
+                    GD.Print(playerSprite);
                 }
             }
             else if (packet is PongPacket)
@@ -111,6 +119,11 @@ public class Connection : Node2D
             {
                 PlayerPositionPacket parsed_packet = (PlayerPositionPacket) packet;
                 GetParent().GetNode("World/Player").Call("move", new object[] {parsed_packet.x, parsed_packet.y});
+            }
+            else if (packet is ChatPacket)
+            {
+                ChatPacket parsed_packet = (ChatPacket) packet;
+                GD.Print(parsed_packet.author + ": " + parsed_packet.msg);
             }
         } else {
             var testPacket = new Packets.PingPacket("Hello There!");

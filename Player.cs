@@ -17,7 +17,7 @@ public class Player : KinematicBody2D
 
     Vector2 moveDelta = new Vector2(0, 0);
 
-    public Vector2 pos = new Vector2(0, 0);
+    public Vector2 pos = new Vector2(-1, -1);
 
     Vector2 prevPos = new Vector2(0, 0);
     string prevAnim = "";

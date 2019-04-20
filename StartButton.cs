@@ -21,7 +21,7 @@ public class StartButton : Button
     public override void _Pressed()
     {
         GD.Print("Beep.");
-        var loadingRes = GD.Load<PackedScene>("res://gameload.tscn");
+        var loadingRes = GD.Load<PackedScene>("res://scenes/gameload.tscn");
         var node = loadingRes.Instance();
         node.SetName("GameLoader");
         GetParent().GetParent().Call("setState", 1);

@@ -6,18 +6,24 @@ namespace Packets
 
         public string message;
 
+        public static DataType[] schema = {
+            new DataEndingString()
+        };
+
         public PingPacket(string msg)
         {
             message = msg;
         }
         public PingPacket(byte[] received_data)
         {
-            message = System.Text.Encoding.UTF8.GetString(received_data, 0, received_data.Length);
+            var decoded = Packets.decodeData(schema, received_data);
+            message = (string) decoded[0];
         }
 
         public override byte[] encode()
         {
-            return System.Text.Encoding.UTF8.GetBytes(message);
+            var output = Packets.encodeData(schema, new object[] {message});
+            return output;
         }
     }
 

@@ -9,6 +9,12 @@ namespace Packets
         public int responseCode;
         public string userId;
 
+        public static DataType[] schema = {
+            new DataByte(),
+            new DataEndingString()
+        };
+
+
         public LoginResultPacket(int code, string user)
         {
             responseCode = code;
@@ -16,19 +22,14 @@ namespace Packets
         }
         public LoginResultPacket(byte[] received_data)
         {
-            responseCode = received_data[0];
-            userId = System.Text.Encoding.UTF8.GetString(received_data, 1, received_data.Length - 1);
+            var decoded = Packets.decodeData(schema, received_data);
+            responseCode = (int) decoded[0];
+            userId = (string) decoded[1];
         }
 
         public override byte[] encode()
         {
-            var responseCodeByte = BitConverter.GetBytes(responseCode)[0];
-            var userIdBytes = System.Text.Encoding.UTF8.GetBytes(userId);
-            var output = new byte[1 + userIdBytes.Length];
-
-            System.Buffer.SetByte(output, 0, responseCodeByte);
-            System.Buffer.BlockCopy(userIdBytes, 0, output, 1, userIdBytes.Length);
-
+            var output = Packets.encodeData(schema, new object[] {responseCode, userId});
             return output;
         }
     }

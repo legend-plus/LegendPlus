@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 using Packets;
 
 public class world : Node2D
@@ -14,10 +15,14 @@ public class world : Node2D
 
     public bool debugMode = false;
 
+    public Dictionary<String, PackedScene> sprites = new Dictionary<string, PackedScene>();
+
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
         GD.Print("World create!");   
+        sprites["rowan"] = GD.Load<PackedScene>("res://characters/rowan/rowan.tscn");
+        sprites["orange_cat"] = GD.Load<PackedScene>("res://characters/orange_cat/orange_cat.tscn");
     }
 
     public override void _Process(float delta)
@@ -29,6 +34,17 @@ public class world : Node2D
             var bumpMap = (TileMap) GetNode("BumpMap");
             tileMap.SetVisible(!debugMode);
             bumpMap.SetVisible(debugMode);
+        }
+    }
+
+    public PackedScene getSprite(string spriteName) {
+        if (sprites.ContainsKey(spriteName))
+        {
+            return sprites[spriteName];
+        }
+        else
+        {
+            return sprites["rowan"];
         }
     }
 

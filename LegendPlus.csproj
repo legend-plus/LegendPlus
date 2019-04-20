@@ -55,6 +55,7 @@
       <HintPath>miscutil\MiscUtil.dll</HintPath>
     </Reference>
     <Compile Include="packets\*.cs" />
+    <Compile Include="packets\types\*.cs" />
     <Compile Include="packets\client\*.cs" />
     <Compile Include="packets\server\*.cs" />
     <Compile Include="Connection.cs" />

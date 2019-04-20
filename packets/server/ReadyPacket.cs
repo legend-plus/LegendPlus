@@ -8,18 +8,24 @@ namespace Packets
 
         public int code;
 
+        public static DataType[] schema = {
+            new DataByte()
+        };
+
         public ReadyPacket(int readyCode)
         {
             code = readyCode;
         }
         public ReadyPacket(byte[] received_data)
         {
-            code = received_data[0];
+            var decoded = Packets.decodeData(schema, received_data);
+            code = (int) decoded[0];
         }
 
         public override byte[] encode()
         {
-            return new byte[] {BitConverter.GetBytes(code)[0]};
+            var output = Packets.encodeData(schema, new object[] {code});
+            return output;
         }
     }
 

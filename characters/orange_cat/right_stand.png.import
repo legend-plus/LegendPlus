@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/down.png-8de9a748b6848738e66cd6a3bf1dd264.stex"
+path="res://.import/right_stand.png-bbe9e6e7e7d45a24e6e7ec2a4d182b1a.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://characters/rowan/down.png"
-dest_files=[ "res://.import/down.png-8de9a748b6848738e66cd6a3bf1dd264.stex" ]
+source_file="res://characters/orange_cat/right_stand.png"
+dest_files=[ "res://.import/right_stand.png-bbe9e6e7e7d45a24e6e7ec2a4d182b1a.stex" ]
 
 [params]
 

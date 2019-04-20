@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://world.cs" type="Script" id=1]
 [ext_resource path="res://sprites/void.png" type="Texture" id=2]
@@ -6,18 +6,6 @@
 [ext_resource path="res://sprites/magma.png" type="Texture" id=4]
 [ext_resource path="res://sprites/tiles.tres" type="TileSet" id=5]
 [ext_resource path="res://Player.cs" type="Script" id=6]
-[ext_resource path="res://characters/rowan/left.png" type="Texture" id=7]
-[ext_resource path="res://characters/rowan/right.png" type="Texture" id=8]
-[ext_resource path="res://characters/rowan/up.png" type="Texture" id=9]
-[ext_resource path="res://characters/rowan/down_walk1.png" type="Texture" id=10]
-[ext_resource path="res://characters/rowan/down_walk2.png" type="Texture" id=11]
-[ext_resource path="res://characters/rowan/up_walk1.png" type="Texture" id=12]
-[ext_resource path="res://characters/rowan/up_walk2.png" type="Texture" id=13]
-[ext_resource path="res://characters/rowan/left_walk1.png" type="Texture" id=14]
-[ext_resource path="res://characters/rowan/left_walk2.png" type="Texture" id=15]
-[ext_resource path="res://characters/rowan/down.png" type="Texture" id=16]
-[ext_resource path="res://characters/rowan/right_walk1.png" type="Texture" id=17]
-[ext_resource path="res://characters/rowan/right_walk2.png" type="Texture" id=18]
 
 [sub_resource type="TileSet" id=1]
 0/name = "void.png 0"
@@ -51,49 +39,6 @@
 2/shapes = [  ]
 2/z_index = 0
 
-[sub_resource type="SpriteFrames" id=2]
-animations = [ {
-"frames": [ ExtResource( 7 ) ],
-"loop": false,
-"name": "left",
-"speed": 0.0
-}, {
-"frames": [ ExtResource( 8 ) ],
-"loop": false,
-"name": "right",
-"speed": 5.0
-}, {
-"frames": [ ExtResource( 9 ) ],
-"loop": false,
-"name": "up",
-"speed": 0.0
-}, {
-"frames": [ ExtResource( 10 ), ExtResource( 11 ) ],
-"loop": true,
-"name": "down_walk",
-"speed": 5.0
-}, {
-"frames": [ ExtResource( 12 ), ExtResource( 13 ) ],
-"loop": true,
-"name": "up_walk",
-"speed": 5.0
-}, {
-"frames": [ ExtResource( 14 ), ExtResource( 15 ) ],
-"loop": true,
-"name": "left_walk",
-"speed": 5.0
-}, {
-"frames": [ ExtResource( 16 ) ],
-"loop": false,
-"name": "down",
-"speed": 0.0
-}, {
-"frames": [ ExtResource( 17 ), ExtResource( 18 ) ],
-"loop": true,
-"name": "right_walk",
-"speed": 5.0
-} ]
-
 [node name="World" type="Node2D"]
 script = ExtResource( 1 )
 
@@ -123,11 +68,6 @@ drag_margin_right = 0.0
 drag_margin_bottom = 0.0
 
 [node name="Player" type="KinematicBody2D" parent="."]
-position = Vector2( -30, -30 )
+position = Vector2( -90, -80 )
 script = ExtResource( 6 )
-
-[node name="PlayerSprite" type="AnimatedSprite" parent="Player"]
-frames = SubResource( 2 )
-animation = "down"
-centered = false
 
