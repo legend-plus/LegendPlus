@@ -110,7 +110,7 @@ public class Connection : Node2D
             else if (packet is PlayerPositionPacket)
             {
                 PlayerPositionPacket parsed_packet = (PlayerPositionPacket) packet;
-                GetParent().GetNode("World").Call("move", new object[] {parsed_packet.x, parsed_packet.y});
+                GetParent().GetNode("World/Player").Call("move", new object[] {parsed_packet.x, parsed_packet.y});
             }
         } else {
             var testPacket = new Packets.PingPacket("Hello There!");
