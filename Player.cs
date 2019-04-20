@@ -20,6 +20,7 @@ public class Player : KinematicBody2D
     public Vector2 pos = new Vector2(0, 0);
 
     Vector2 prevPos = new Vector2(0, 0);
+    string prevAnim = "";
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -91,20 +92,47 @@ public class Player : KinematicBody2D
         var result = tileMap.MapToWorld(pos);
         //camera.SetPosition(result);
         var playerSprite = (AnimatedSprite) GetNode("PlayerSprite");
-        playerSprite.SetFrame(facing);
-        if (moving) {
-            if ((timeMoving + delta) >= moveTime) {
+        string animation = "";
+        switch (facing)
+        {
+            case 0:
+                animation = "left";
+                break;
+            case 1:
+                animation = "up";
+                break;
+            case 2:
+                animation = "down";
+                break;
+            case 3:
+                animation = "right";
+                break;
+        }
+        if (moving)
+        {
+            animation += "_walk";
+            playerSprite.Play();
+            if ((timeMoving + delta) >= moveTime)
+            {
                 delta = moveTime - timeMoving;
                 moving = false;
             }
             timeMoving += delta;
             MoveAndCollide(moveDelta * delta);
             camera.SetPosition(Position);
-        } else {
+        }
+        else
+        {
             SetPosition(result);
             camera.SetPosition(result);
         }
+        if (animation != prevAnim)
+        {
+            GD.Print("Setting anim to " + animation);
+            playerSprite.SetAnimation(animation);
+        }
         prevPos = pos;
+        prevAnim = animation;
     }
 
     public void move(int x, int y)

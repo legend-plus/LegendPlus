@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/rowan_up.png-93c010e6fec88981e51cdca344d907cf.stex"
+path="res://.import/up.png-197e49a64d0858effaeb0d151211b0b0.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://characters/rowan/rowan_up.png"
-dest_files=[ "res://.import/rowan_up.png-93c010e6fec88981e51cdca344d907cf.stex" ]
+source_file="res://characters/rowan/up.png"
+dest_files=[ "res://.import/up.png-197e49a64d0858effaeb0d151211b0b0.stex" ]
 
 [params]
 
