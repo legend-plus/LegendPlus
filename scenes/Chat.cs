@@ -51,9 +51,6 @@ public class Chat : ScrollContainer
         var messageLabel = (Label) chatMessageNode.GetNode("Message");
         messageLabel.SetText(message);
         chatMessageNode.SetCustomMinimumSize(new Vector2(750, messageLabel.GetLineCount() * messageLabel.GetLineHeight()));
-        GD.Print(messageLabel.GetLineCount() * messageLabel.GetLineHeight());
-        GD.Print("GVLC ", messageLabel.GetVisibleLineCount());
-        GD.Print("IDK ", messageLabel.GetSize());
         toResize = chatMessageNode;
         GetNode("ChatContainer").AddChild(chatMessageNode);
         Update();

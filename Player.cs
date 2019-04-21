@@ -15,6 +15,10 @@ public class Player : KinematicBody2D
     const float moveTime = 0.2f;
     bool moving = false;
 
+    bool focused = true;
+
+    string focus = "GameFocus";
+
     float timeMoving = 0.0f;
 
     Vector2 moveDelta = new Vector2(0, 0);
@@ -35,6 +39,8 @@ public class Player : KinematicBody2D
         var camera = (Camera2D) GetParent().GetNode("Camera2D");
         var tileMap = (TileMap) GetParent().GetNode("Tiles");
         var bumpMap = (TileMap) GetParent().GetNode("BumpMap");
+        //bool doMove = focused && !moving;
+        bool doMove = (focus == "GameFocus" && !moving);
         if (pos != prevPos) {
             var newPos = tileMap.MapToWorld(pos);
             SetPosition(newPos);
@@ -42,25 +48,25 @@ public class Player : KinematicBody2D
             moving = false;
         }
         var target = new Vector2(pos);
-        if (Input.IsActionPressed("ui_right") && !moving)
+        if (Input.IsActionPressed("ui_right") && doMove)
         {
             target.x += 1;
             facing = 3;
             moving = true;
         }
-        if (Input.IsActionPressed("ui_left") && !moving)
+        if (Input.IsActionPressed("ui_left") && doMove)
         {
             target.x -= 1;
             facing = 0;
             moving = true;
         }
-        if (Input.IsActionPressed("ui_down") && !moving)
+        if (Input.IsActionPressed("ui_down") && doMove)
         {
             target.y += 1;
             facing = 2;
             moving = true;
         }
-        if (Input.IsActionPressed("ui_up") && !moving)
+        if (Input.IsActionPressed("ui_up") && doMove)
         {
             target.y -= 1;
             facing = 1;
@@ -151,6 +157,12 @@ public class Player : KinematicBody2D
         var tileMap = (TileMap) GetParent().GetNode("Tiles");
         var result = tileMap.MapToWorld(pos);
         SetPosition(result);
+    }
+
+    public void setFocus(string newFocus)
+    {
+        //focused = newFocus;
+        focus = newFocus;
     }
 
 //  // Called every frame. 'delta' is the elapsed time since the previous frame.

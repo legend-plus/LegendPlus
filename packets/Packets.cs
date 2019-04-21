@@ -6,6 +6,7 @@ namespace Packets
     public class Packets {
         static Dictionary<short, string> packet_names = new Dictionary<short, string>
         {
+            [-7] = "send_message_packet",
             [-6] = "move_and_face_packet",
             [-5] = "move_packet",
             [-4] = "request_world_packet",
@@ -77,6 +78,8 @@ namespace Packets
             string packet_name = packet_names[id];
             switch (packet_name)
             {
+                case "send_message_packet":
+                    return new SendMessagePacket(data);
                 case "move_and_face_packet":
                     return new MoveAndFacePacket(data);
                 case "move_packet":
