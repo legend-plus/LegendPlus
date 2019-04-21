@@ -13,6 +13,7 @@ public class Connection : Node2D
     PacketPeerStream wrapped_client;
     bool connected = false;
     // Called when the node enters the scene tree for the first time.
+
     public override void _Ready()
     {
         client = new StreamPeerTCP();
@@ -83,15 +84,21 @@ public class Connection : Node2D
                     sendPacket(requestWorldPacket);
                     var loadingRes = GD.Load<PackedScene>("res://scenes/world.tscn");
                     var node = loadingRes.Instance();
-                    node.SetName("World");
+                    node.SetName("WorldScene");
+                    var loadingGuiRes = GD.Load<PackedScene>("res://scenes/gui.tscn");
+                    var gui = (Control) loadingGuiRes.Instance();
+                    gui.SetName("GUI");
                     GetParent().Call("setState", 2);
                     GetParent().AddChild(node);
+                    //GetParent().AddChild(gui);
+                    GetParent().AddChild(gui);
+                    //node.AddChild(gui);
                     GetParent().GetNode("GameLoader").Free();
                     var playerSpriteScene = (PackedScene) node.Call("getSprite", "rowan");
                     var playerSprite = (AnimatedSprite) playerSpriteScene.Instance();
                     playerSprite.SetName("PlayerSprite");
                     //playerSprite.SetAnimation("down");
-                    node.GetNode("Player").AddChild(playerSprite);
+                    node.GetNode("World/Player").AddChild(playerSprite);
                     //playerSprite.Position = ((KinematicBody2D) node.GetNode("Player")).Position;
                     //playerSprite.Visible = true;
                     GD.Print(playerSprite);
@@ -113,17 +120,17 @@ public class Connection : Node2D
             {
                 WorldPacket parsed_packet = (WorldPacket) packet;
                 //GD.Print(parsed_packet.debug);
-                GetParent().GetNode("World").Call("loadWorld", new object[] {parsed_packet.worldData, parsed_packet.bumpData, parsed_packet.height, parsed_packet.width});
+                GetParent().GetNode("WorldScene").Call("loadWorld", new object[] {parsed_packet.worldData, parsed_packet.bumpData, parsed_packet.height, parsed_packet.width});
             }
             else if (packet is PlayerPositionPacket)
             {
                 PlayerPositionPacket parsed_packet = (PlayerPositionPacket) packet;
-                GetParent().GetNode("World/Player").Call("move", new object[] {parsed_packet.x, parsed_packet.y});
+                GetParent().GetNode("WorldScene/World/Player").Call("move", new object[] {parsed_packet.x, parsed_packet.y});
             }
             else if (packet is ChatPacket)
             {
                 ChatPacket parsed_packet = (ChatPacket) packet;
-                GD.Print(parsed_packet.author + ": " + parsed_packet.msg);
+                GetNode("../GUI/Chat").Call("AddMessage", parsed_packet.author + ": " + parsed_packet.msg);
             }
         } else {
             var testPacket = new Packets.PingPacket("Hello There!");

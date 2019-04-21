@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Player.cs" />
+    <Compile Include="scenes\Chat.cs" />
     <Compile Include="world.cs" />
     <Reference Include="MiscUtil">
       <HintPath>miscutil\MiscUtil.dll</HintPath>

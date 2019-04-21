@@ -13,8 +13,6 @@ public class world : Node2D
 
     public int[,] bumpWorld;
 
-    public bool debugMode = false;
-
     public Dictionary<String, PackedScene> sprites = new Dictionary<string, PackedScene>();
 
     // Called when the node enters the scene tree for the first time.
@@ -27,14 +25,7 @@ public class world : Node2D
 
     public override void _Process(float delta)
     {
-        if (Input.IsActionJustPressed("debug_mode"))
-        {
-            debugMode = !debugMode;
-            var tileMap = (TileMap) GetNode("Tiles");
-            var bumpMap = (TileMap) GetNode("BumpMap");
-            tileMap.SetVisible(!debugMode);
-            bumpMap.SetVisible(debugMode);
-        }
+        
     }
 
     public PackedScene getSprite(string spriteName) {
@@ -54,8 +45,8 @@ public class world : Node2D
         // Guess the earth is flat after all
         tileWorld = new int[height, width];
         bumpWorld = new int[height, width];
-        var tileMap = (TileMap) GetNode("Tiles");
-        var bumpMap = (TileMap) GetNode("BumpMap");
+        var tileMap = (TileMap) GetNode("World/Tiles");
+        var bumpMap = (TileMap) GetNode("World/BumpMap");
         for (var y = 0; y < height; y++) {
             for (var x = 0; x < width; x++) {
                 var cell = flatWorld[(y * width) + x];
@@ -66,7 +57,7 @@ public class world : Node2D
                 bumpMap.SetCell(x, y, bumpCell);
             }
         }
-        var camera = (Camera2D) GetNode("Camera2D");
+        var camera = (Camera2D) GetNode("World/Camera2D");
         var corner = tileMap.MapToWorld(new Vector2(height, width));
         camera.LimitRight = (int) corner.x;
         camera.LimitBottom = (int) corner.y;

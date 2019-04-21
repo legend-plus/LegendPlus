@@ -8,6 +8,8 @@ public class Player : KinematicBody2D
     // private int a = 2;
     // private string b = "text";
 
+
+    public bool debugMode = false;
     public int facing;
 
     const float moveTime = 0.2f;
@@ -64,6 +66,12 @@ public class Player : KinematicBody2D
             facing = 1;
             moving = true;
         }
+        if (Input.IsActionJustPressed("debug_mode"))
+        {
+            debugMode = !debugMode;
+            tileMap.SetVisible(!debugMode);
+            bumpMap.SetVisible(debugMode);
+        }
         //GD.Print(new object[] {pos, " vs.  ", target});
         if (!pos.Equals(target) && moving)
         {
@@ -77,14 +85,14 @@ public class Player : KinematicBody2D
                 GD.Print("Delta ", deltaPos);
                 pos = target;
                 var movePacket = new MoveAndFacePacket((int) pos.x, (int) pos.y, (int) facing);
-                var conn = (StreamPeerTCP) GetParent().GetParent().GetNode("Connection").Call("getClient");
+                var conn = (StreamPeerTCP) GetParent().GetNode("../../Connection").Call("getClient");
                 var data = Packets.Packets.encode(movePacket);
                 conn.PutData(data);
             } 
             else
             {
                 var movePacket = new MoveAndFacePacket((int) pos.x, (int) pos.y, (int) facing);
-                var conn = (StreamPeerTCP) GetParent().GetParent().GetNode("Connection").Call("getClient");
+                var conn = (StreamPeerTCP) GetParent().GetNode("../../Connection").Call("getClient");
                 var data = Packets.Packets.encode(movePacket);
                 conn.PutData(data);
             }
@@ -133,6 +141,7 @@ public class Player : KinematicBody2D
         }
         prevPos = pos;
         prevAnim = animation;
+        camera.SetPosition(Position);
     }
 
     public void move(int x, int y)
