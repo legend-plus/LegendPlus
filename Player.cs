@@ -83,7 +83,7 @@ public class Player : KinematicBody2D
         {
             var prevPos = tileMap.MapToWorld(pos);
             var newPos = tileMap.MapToWorld(target);
-            if ( bumpMap.GetCell((int) target.x, (int) target.y) != 0 )
+            if ( bumpMap.GetCell((int) target.x, (int) target.y) != 0 && !(bool) GetParent().GetParent().Call("collidesWithEntity", newPos))
             {
                 var deltaPos = newPos - prevPos;
                 moveDelta = deltaPos / moveTime;

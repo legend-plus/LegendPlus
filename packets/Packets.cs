@@ -20,7 +20,8 @@ namespace Packets
             [4] = "ready_packet",
             [5] = "player_position_packet",
             [6] = "disconnect_packet",
-            [7] = "chat_packet"
+            [7] = "chat_packet",
+            [8] = "entity_packet"
         };
 
         public static object[] decodeData(DataType[] schema, byte[] data)
@@ -108,6 +109,8 @@ namespace Packets
                     return new DisconnectPacket(data);
                 case "chat_packet":
                     return new ChatPacket(data);
+                case "entity_packet":
+                    return new EntityPacket(data);
                 default:
                     return new NullPacket(data);
             }

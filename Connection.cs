@@ -132,6 +132,12 @@ public class Connection : Node2D
                 ChatPacket parsed_packet = (ChatPacket) packet;
                 GetNode("../GUI/Chat").Call("AddMessage", parsed_packet.author + ": " + parsed_packet.msg);
             }
+            else if (packet is EntityPacket)
+            {
+                EntityPacket parsed_packet = (EntityPacket) packet;
+                GD.Print("Got entity '", parsed_packet.sprite, "' at ", parsed_packet.x, ",", parsed_packet.y, " ID: ", parsed_packet.uuid);
+                GetNode("../WorldScene").Call("addEntity", parsed_packet.x, parsed_packet.y, parsed_packet.type, parsed_packet.facing, parsed_packet.interactable, parsed_packet.sprite, parsed_packet.uuid);
+            }
         } else {
             var testPacket = new Packets.PingPacket("Hello There!");
             //sendPacket(testPacket);
