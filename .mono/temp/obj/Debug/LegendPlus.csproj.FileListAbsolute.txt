@@ -1,0 +1,9 @@
+C:\Users\lukem\Documents\Github\LegendPlus\.mono\temp\bin\Debug\LegendPlus.dll
+C:\Users\lukem\Documents\Github\LegendPlus\.mono\temp\bin\Debug\LegendPlus.pdb
+C:\Users\lukem\Documents\Github\LegendPlus\.mono\temp\bin\Debug\MiscUtil.dll
+C:\Users\lukem\Documents\Github\LegendPlus\.mono\temp\bin\Debug\MiscUtil.xml
+C:\Users\lukem\Documents\Github\LegendPlus\.mono\temp\obj\Debug\LegendPlus.csprojAssemblyReference.cache
+C:\Users\lukem\Documents\Github\LegendPlus\.mono\temp\obj\Debug\LegendPlus.csproj.CoreCompileInputs.cache
+C:\Users\lukem\Documents\Github\LegendPlus\.mono\temp\obj\Debug\LegendPlus.csproj.CopyComplete
+C:\Users\lukem\Documents\Github\LegendPlus\.mono\temp\obj\Debug\LegendPlus.dll
+C:\Users\lukem\Documents\Github\LegendPlus\.mono\temp\obj\Debug\LegendPlus.pdb

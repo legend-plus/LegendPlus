@@ -26,6 +26,6 @@ public class StartButton : Button
         node.SetName("GameLoader");
         GetParent().GetParent().Call("setState", 1);
         GetParent().GetParent().AddChild(node);
-        GetParent().GetParent().GetNode("Menu").Free();
+        //GetParent().GetParent().GetNode("Menu").Free();
     }
 }
