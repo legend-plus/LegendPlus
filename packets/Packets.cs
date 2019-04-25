@@ -21,7 +21,9 @@ namespace Packets
             [5] = "player_position_packet",
             [6] = "disconnect_packet",
             [7] = "chat_packet",
-            [8] = "entity_packet"
+            [8] = "entity_packet",
+            [9] = "entity_move_packet",
+            [10] = "invalidate_cache_packet"
         };
 
         public static object[] decodeData(DataType[] schema, byte[] data)
@@ -111,6 +113,10 @@ namespace Packets
                     return new ChatPacket(data);
                 case "entity_packet":
                     return new EntityPacket(data);
+                case "entity_move_packet":
+                    return new EntityMovePacket(data);
+                case "invalidate_cache_packet":
+                    return new InvalidateCachePacket(data);
                 default:
                     return new NullPacket(data);
             }

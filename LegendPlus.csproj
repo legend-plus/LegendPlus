@@ -49,6 +49,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="entities\Entity.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="scenes\Chat.cs" />
     <Compile Include="scenes\GameFocus.cs" />

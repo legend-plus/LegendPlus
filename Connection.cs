@@ -138,6 +138,18 @@ public class Connection : Node2D
                 GD.Print("Got entity '", parsed_packet.sprite, "' at ", parsed_packet.x, ",", parsed_packet.y, " ID: ", parsed_packet.uuid);
                 GetNode("../WorldScene").Call("addEntity", parsed_packet.x, parsed_packet.y, parsed_packet.type, parsed_packet.facing, parsed_packet.interactable, parsed_packet.sprite, parsed_packet.uuid);
             }
+            else if (packet is EntityMovePacket)
+            {
+                EntityMovePacket parsed_packet = (EntityMovePacket) packet;
+                GD.Print("Got entity moving to ", parsed_packet.x, ",", parsed_packet.y, " ID: ", parsed_packet.uuid);
+                GetNode("../WorldScene").Call("moveEntity", parsed_packet.uuid, parsed_packet.x, parsed_packet.y, parsed_packet.facing);
+            }
+            else if (packet is InvalidateCachePacket)
+            {
+                InvalidateCachePacket parsed_packet = (InvalidateCachePacket) packet;
+                GD.Print(parsed_packet.uuid, " Invalidated.");
+                GetNode("../WorldScene").Call("hideEntity", parsed_packet.uuid);
+            }
         } else {
             var testPacket = new Packets.PingPacket("Hello There!");
             //sendPacket(testPacket);

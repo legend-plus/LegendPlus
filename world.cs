@@ -16,7 +16,9 @@ public class world : Node2D
 
     public Dictionary<String, PackedScene> sprites = new Dictionary<string, PackedScene>();
 
-    public List<Node2D> entities = new List<Node2D>();
+    public List<Node2D> entityList = new List<Node2D>();
+
+    public Dictionary<String, KinematicBody2D> entities = new Dictionary<string, KinematicBody2D>();
 
     PackedScene baseEntity;
 
@@ -73,26 +75,51 @@ public class world : Node2D
 
     public void addEntity(int pos_x, int pos_y, int entity_type, int entity_facing, bool entity_interactable, string entity_sprite, string entity_uuid)
     {
-        if (sprites.ContainsKey(entity_sprite))
+        if (sprites.ContainsKey(entity_sprite) && !entities.ContainsKey(entity_uuid))
         {
             var spriteScene = sprites[entity_sprite];
             var sprite = (AnimatedSprite) spriteScene.Instance();
-            var entity = (Node2D) baseEntity.Instance();
+            var entity = (KinematicBody2D) baseEntity.Instance();
+            sprite.SetName("EntitySprite");
             entity.AddChild(sprite);
             entity.SetName(entity_uuid);
             var tileMap = (TileMap) GetNode("World/Tiles");
             var pos = tileMap.MapToWorld(new Vector2(pos_x, pos_y));
             entity.SetPosition(pos);
-            entities.Add(entity);
+            entity.Call("SetTilePosition", new Vector2(pos_x, pos_y));
+            entity.Call("SetFacing", entity_facing);
+            entityList.Add(entity);
+            entities.Add(entity_uuid, entity);
             GetNode("World").AddChild(entity);
         }
+        else if (sprites.ContainsKey(entity_sprite) && entities.ContainsKey(entity_uuid))
+        {
+            var tileMap = (TileMap) GetNode("World/Tiles");
+            entities[entity_uuid].SetVisible(true);
+            entities[entity_uuid].Call("SetTilePosition", new Vector2(pos_x, pos_y));
+            var pos = tileMap.MapToWorld(new Vector2(pos_x, pos_y));
+            entities[entity_uuid].SetPosition(pos);
+            entities[entity_uuid].Call("SetFacing", entity_facing);
+            ((AnimatedSprite) entities[entity_uuid].GetNode("EntitySprite")).SetVisible(true);
+        }
+    }
+
+    public void moveEntity(string entity_uuid, int pos_x, int pos_y, int facing)
+    {
+        entities[entity_uuid].Call("Move", new Vector2(pos_x, pos_y), facing);
+    }
+
+    public void hideEntity(string entity_uuid)
+    {
+        entities[entity_uuid].SetVisible(false);
+        ((AnimatedSprite) entities[entity_uuid].GetNode("EntitySprite")).SetVisible(false);
     }
 
     public bool collidesWithEntity(Vector2 position)
     {
-        for (var i = 0; i < entities.Count; i++)
+        for (var i = 0; i < entityList.Count; i++)
         {
-            var entity = entities[i];
+            var entity = entityList[i];
             if (position.x == entity.Position.x && position.y == entity.Position.y)
             {
                 return true;
