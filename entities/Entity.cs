@@ -19,6 +19,8 @@ public class Entity : KinematicBody2D
     public Vector2 pos = new Vector2(-1, -1);
     string prevAnim = "";
 
+    public bool solid = true;
+
     public override void _Ready()
     {
         
@@ -100,6 +102,11 @@ public class Entity : KinematicBody2D
     public void SetFacing(int new_facing)
     {
         facing = new_facing;
+    }
+
+    public void SetSolid(bool newSolidity)
+    {
+        solid = newSolidity;
     }
 
 //  // Called every frame. 'delta' is the elapsed time since the previous frame.

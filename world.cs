@@ -73,7 +73,7 @@ public class world : Node2D
         GD.Print("World Loaded");
     }
 
-    public void addEntity(int pos_x, int pos_y, int entity_type, int entity_facing, bool entity_interactable, string entity_sprite, string entity_uuid)
+    public void addEntity(int pos_x, int pos_y, int entity_type, int entity_facing, bool entity_interactable, string entity_sprite, string entity_uuid, bool solid)
     {
         if (sprites.ContainsKey(entity_sprite) && !entities.ContainsKey(entity_uuid))
         {
@@ -88,6 +88,7 @@ public class world : Node2D
             entity.SetPosition(pos);
             entity.Call("SetTilePosition", new Vector2(pos_x, pos_y));
             entity.Call("SetFacing", entity_facing);
+            entity.Call("SetSolid", solid);
             entityList.Add(entity);
             entities.Add(entity_uuid, entity);
             GetNode("World").AddChild(entity);
@@ -119,8 +120,8 @@ public class world : Node2D
     {
         for (var i = 0; i < entityList.Count; i++)
         {
-            var entity = entityList[i];
-            if (position.x == entity.Position.x && position.y == entity.Position.y)
+            var entity = (Entity) entityList[i];
+            if (position.x == entity.Position.x && position.y == entity.Position.y && entity.solid)
             {
                 return true;
             }

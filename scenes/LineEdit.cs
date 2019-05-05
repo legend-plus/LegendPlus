@@ -30,9 +30,7 @@ public class LineEdit : Godot.LineEdit
         {
             SetText("");
             var chatPacket = new SendMessagePacket(text);
-            var conn = (StreamPeerTCP) GetNode("../../Connection").Call("getClient");
-            var data = Packets.Packets.encode(chatPacket);
-            conn.PutData(data);
+            sendPacket(chatPacket);
         }
         doReleaseFocus = true;
     }
@@ -47,6 +45,20 @@ public class LineEdit : Godot.LineEdit
         {
             ReleaseFocus();
             doReleaseFocus = false;
+        }
+    }
+
+    public void sendPacket(Packet packet)
+    {
+        var client = (StreamPeerTCP) GetNode("../../Connection").Call("getClient");
+        if (client.IsConnectedToHost())
+        {
+            var data = Packets.Packets.encode(packet);
+            if (GetNodeOrNull("../../GUI") != null) {
+                var gui = (Control) GetNodeOrNull("../../GUI");
+                gui.Call("recordSendPacket", data.Length);
+            }
+            client.PutData(data);
         }
     }
 

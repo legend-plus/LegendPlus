@@ -87,4 +87,3 @@ drag_margin_bottom = 0.0
 [node name="Polygon2D" type="Polygon2D" parent="."]
 texture = SubResource( 3 )
 polygon = PoolVector2Array( 0, 640, 0, 0, 1024, 0, 1024, 640 )
-

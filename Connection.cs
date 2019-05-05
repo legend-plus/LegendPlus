@@ -12,6 +12,15 @@ public class Connection : Node2D
     StreamPeerTCP client;
     PacketPeerStream wrapped_client;
     bool connected = false;
+
+    bool disconnected = false;
+
+    string ip = "192.95.22.236";
+    //string ip = "127.0.0.1";
+    int port = 21321;
+
+    bool joined = false;
+
     // Called when the node enters the scene tree for the first time.
 
     public override void _Ready()
@@ -24,16 +33,31 @@ public class Connection : Node2D
     {
         if (connected && !client.IsConnectedToHost()) {
             connected = false;
+            disconnected = true;
         }
         if (connected) {
             getPackets();
+        }
+        if (disconnected)
+        {
+            GD.Print(String.Format("Reconnecting to {0}:{1}", ip, port));
+            client.ConnectToHost(ip, port);
+            if (client.IsConnectedToHost()) {
+                client.SetNoDelay(true);
+                client.SetBlockSignals(true);
+                wrapped_client = new PacketPeerStream();
+                wrapped_client.SetStreamPeer(client);
+                connected = true;
+                disconnected = false;
+                GD.Print("Reconnected.");
+            } else {
+                GD.Print("Failed to connect.");
+            }
         }
     }
 
     public void start()
     {
-        var ip = "192.95.22.236";
-        var port = 21321;
         GD.Print(String.Format("Connecting to {0}:{1}", ip, port));
         client.ConnectToHost(ip, port);
         if (client.IsConnectedToHost()) {
@@ -42,8 +66,7 @@ public class Connection : Node2D
             wrapped_client = new PacketPeerStream();
             wrapped_client.SetStreamPeer(client);
             var testPacket = new Packets.PingPacket("Hello There!");
-            //sendPacket(testPacket);
-            //wrapped_client.PutPacket(data);
+            sendPacket(testPacket);
             //GD.Print(client.PutData(data));
             connected = true;
             GD.Print("Connected.");
@@ -65,10 +88,16 @@ public class Connection : Node2D
             short packetId = (short) client.Get16();
             var packetData = client.GetData((int) packetLength - 2);
             //var data = new List<byte>(packet_data).GetRange(6, packet_data.Length -6).ToArray();
-            GD.Print(String.Format("Received packet, ID: {0} Length: {1}", packetId, packetLength));
             //GD.Print(BitConverter.ToString( (byte[]) packetData[1]));
             var data = (byte[]) packetData[1];
             var packet = Packets.Packets.decode(packetId, data);
+
+            if (GetParent().GetNodeOrNull("GUI") != null) {
+                var gui = (Control) GetParent().GetNodeOrNull("GUI");
+                gui.Call("recordPacket", packetLength + 4);
+            }
+
+            GD.Print(String.Format("Received packet {0}, ID: {1} Length: {2}", packet.name, packetId, packetLength));
             
             if (packet is ReadyPacket)
             {
@@ -76,32 +105,37 @@ public class Connection : Node2D
                 if (parsed_packet.code == 0) {
                     string token = (string) GetParent().GetNode("Discord Integration").Call("getToken");
                     var loginPacket = new LoginPacket(token);
+                    GD.Print("Sending login");
                     sendPacket(loginPacket);
                 }
                 else if (parsed_packet.code == 1)
                 {
                     var requestWorldPacket = new RequestWorldPacket();
                     sendPacket(requestWorldPacket);
-                    var loadingRes = GD.Load<PackedScene>("res://scenes/world.tscn");
-                    var node = loadingRes.Instance();
-                    node.SetName("WorldScene");
-                    var loadingGuiRes = GD.Load<PackedScene>("res://scenes/gui.tscn");
-                    var gui = (Control) loadingGuiRes.Instance();
-                    gui.SetName("GUI");
-                    GetParent().Call("setState", 2);
-                    GetParent().AddChild(node);
-                    //GetParent().AddChild(gui);
-                    GetParent().AddChild(gui);
-                    //node.AddChild(gui);
-                    GetParent().GetNode("GameLoader").Free();
-                    var playerSpriteScene = (PackedScene) node.Call("getSprite", "rowan");
-                    var playerSprite = (AnimatedSprite) playerSpriteScene.Instance();
-                    playerSprite.SetName("PlayerSprite");
-                    //playerSprite.SetAnimation("down");
-                    node.GetNode("World/Player").AddChild(playerSprite);
-                    //playerSprite.Position = ((KinematicBody2D) node.GetNode("Player")).Position;
-                    //playerSprite.Visible = true;
-                    GD.Print(playerSprite);
+                    if (!joined)
+                    {
+                        var loadingRes = GD.Load<PackedScene>("res://scenes/world.tscn");
+                        var node = loadingRes.Instance();
+                        node.SetName("WorldScene");
+                        var loadingGuiRes = GD.Load<PackedScene>("res://scenes/gui.tscn");
+                        var gui = (Control) loadingGuiRes.Instance();
+                        gui.SetName("GUI");
+                        GetParent().Call("setState", 2);
+                        GetParent().AddChild(node);
+                        //GetParent().AddChild(gui);
+                        GetParent().AddChild(gui);
+                        //node.AddChild(gui);
+                        GetParent().GetNode("GameLoader").Free();
+                        var playerSpriteScene = (PackedScene) node.Call("getSprite", "rowan");
+                        var playerSprite = (AnimatedSprite) playerSpriteScene.Instance();
+                        playerSprite.SetName("PlayerSprite");
+                        //playerSprite.SetAnimation("down");
+                        node.GetNode("World/Player").AddChild(playerSprite);
+                        //playerSprite.Position = ((KinematicBody2D) node.GetNode("Player")).Position;
+                        //playerSprite.Visible = true;
+                        GD.Print(playerSprite);
+                        joined = true;
+                    }
                 }
             }
             else if (packet is PongPacket)
@@ -136,7 +170,7 @@ public class Connection : Node2D
             {
                 EntityPacket parsed_packet = (EntityPacket) packet;
                 GD.Print("Got entity '", parsed_packet.sprite, "' at ", parsed_packet.x, ",", parsed_packet.y, " ID: ", parsed_packet.uuid);
-                GetNode("../WorldScene").Call("addEntity", parsed_packet.x, parsed_packet.y, parsed_packet.type, parsed_packet.facing, parsed_packet.interactable, parsed_packet.sprite, parsed_packet.uuid);
+                GetNode("../WorldScene").Call("addEntity", parsed_packet.x, parsed_packet.y, parsed_packet.type, parsed_packet.facing, parsed_packet.interactable, parsed_packet.sprite, parsed_packet.uuid, parsed_packet.type != 2);
             }
             else if (packet is EntityMovePacket)
             {
@@ -161,6 +195,10 @@ public class Connection : Node2D
         if (client.IsConnectedToHost())
         {
             var data = Packets.Packets.encode(packet);
+            if (GetParent().GetNodeOrNull("GUI") != null) {
+                var gui = (Control) GetParent().GetNodeOrNull("GUI");
+                gui.Call("recordSendPacket", data.Length);
+            }
             client.PutData(data);
         }
     }

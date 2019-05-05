@@ -11,6 +11,7 @@ public class Player : KinematicBody2D
 
     public bool debugMode = false;
     public int facing;
+    public int prevFacing;
 
     const float moveTime = 0.2f;
     bool moving = false;
@@ -77,6 +78,9 @@ public class Player : KinematicBody2D
             debugMode = !debugMode;
             tileMap.SetVisible(!debugMode);
             bumpMap.SetVisible(debugMode);
+            var debugNode = (Control) GetParent().GetParent().GetParent().GetNode("GUI").GetNode("Debug");
+            debugNode.SetVisible(debugMode);
+
         }
         //GD.Print(new object[] {pos, " vs.  ", target});
         if (!pos.Equals(target) && moving)
@@ -91,16 +95,15 @@ public class Player : KinematicBody2D
                 GD.Print("Delta ", deltaPos);
                 pos = target;
                 var movePacket = new MoveAndFacePacket((int) pos.x, (int) pos.y, (int) facing);
-                var conn = (StreamPeerTCP) GetParent().GetNode("../../Connection").Call("getClient");
-                var data = Packets.Packets.encode(movePacket);
-                conn.PutData(data);
+                sendPacket(movePacket);
             } 
             else
             {
-                var movePacket = new MoveAndFacePacket((int) pos.x, (int) pos.y, (int) facing);
-                var conn = (StreamPeerTCP) GetParent().GetNode("../../Connection").Call("getClient");
-                var data = Packets.Packets.encode(movePacket);
-                conn.PutData(data);
+                if (facing != prevFacing)
+                {
+                    var movePacket = new MoveAndFacePacket((int) pos.x, (int) pos.y, (int) facing);
+                    sendPacket(movePacket);
+                }
             }
         }
         var result = tileMap.MapToWorld(pos);
@@ -148,6 +151,7 @@ public class Player : KinematicBody2D
         prevPos = pos;
         prevAnim = animation;
         camera.SetPosition(Position);
+        prevFacing = facing;
     }
 
     public void move(int x, int y)
@@ -163,6 +167,20 @@ public class Player : KinematicBody2D
     {
         //focused = newFocus;
         focus = newFocus;
+    }
+
+    public void sendPacket(Packet packet)
+    {
+        var client = (StreamPeerTCP) GetParent().GetNode("../../Connection").Call("getClient");
+        if (client.IsConnectedToHost())
+        {
+            var data = Packets.Packets.encode(packet);
+            if (GetNodeOrNull("../../../GUI") != null) {
+                var gui = (Control) GetNodeOrNull("../../../GUI");
+                gui.Call("recordSendPacket", data.Length);
+            }
+            client.PutData(data);
+        }
     }
 
 //  // Called every frame. 'delta' is the elapsed time since the previous frame.
