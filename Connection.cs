@@ -15,8 +15,8 @@ public class Connection : Node2D
 
     bool disconnected = false;
 
-    string ip = "192.95.22.236";
-    //string ip = "127.0.0.1";
+    //string ip = "192.95.22.236";
+    string ip = "127.0.0.1";
     int port = 21321;
 
     bool joined = false;

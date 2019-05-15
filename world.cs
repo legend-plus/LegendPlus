@@ -2,6 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.Collections;
+using System.Text;
 using Packets;
 
 public class world : Node2D
@@ -56,6 +57,7 @@ public class world : Node2D
         bumpWorld = new int[height, width];
         var tileMap = (TileMap) GetNode("World/Tiles");
         var bumpMap = (TileMap) GetNode("World/BumpMap");
+        var worldString = new StringBuilder();
         for (var y = 0; y < height; y++) {
             for (var x = 0; x < width; x++) {
                 var cell = flatWorld[(y * width) + x];

@@ -183,6 +183,11 @@ public class Player : KinematicBody2D
         }
     }
 
+    public Vector2 GetPos()
+    {
+        return pos;
+    }
+
 //  // Called every frame. 'delta' is the elapsed time since the previous frame.
 //  public override void _Process(float delta)
 //  {

@@ -60,4 +60,10 @@ margin_top = 40.0
 margin_right = 40.0
 margin_bottom = 54.0
 text = "OUT=0/0bps"
+
+[node name="Chunk" type="Label" parent="Debug"]
+margin_top = 56.0
+margin_right = 40.0
+margin_bottom = 70.0
+text = "CHUNK="
 [connection signal="text_entered" from="LineEdit" to="LineEdit" method="_TextEnterred"]

@@ -80,6 +80,15 @@ public class gui : Control
 
             label = (Label) debug.GetNode("NetworkOut");
             label.SetText("OUT=" + pops.ToString() + "/" + dops.ToString()+ "bps");
+
+            var playerPosNode = GetNodeOrNull("../WorldScene/World/Player");
+            if (playerPosNode != null)
+            {
+                var playerPos = (Vector2) playerPosNode.Call("GetPos");
+                Vector2 chunkPos = new Vector2((int) playerPos.x >> 3, (int) playerPos.y >> 3);
+                label = (Label) debug.GetNode("Chunk");
+                label.SetText("CHUNK=" + chunkPos.x.ToString() +  ", " + chunkPos.y.ToString());
+            }
         }
     }
     public void recordPacket(int size)

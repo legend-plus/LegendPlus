@@ -55,6 +55,8 @@
     <Compile Include="scenes\GameFocus.cs" />
     <Compile Include="scenes\gui.cs" />
     <Compile Include="scenes\LineEdit.cs" />
+    <Compile Include="scenes\Origin.cs" />
+    <Compile Include="scenes\World.cs" />
     <Compile Include="world.cs" />
     <Reference Include="MiscUtil">
       <HintPath>miscutil\MiscUtil.dll</HintPath>
