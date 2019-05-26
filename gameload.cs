@@ -8,10 +8,20 @@ public class gameload : Node2D
     // private string b = "text";
 
     // Called when the node enters the scene tree for the first time.
+    bool freedMenu = false;
     public override void _Ready()
     {
-        GetParent().GetNode("Menu").Free();
+        //GetParent().GetNode("Menu").Free();
         GetParent().GetNode("Connection").Call("start");
+    }
+
+    public override void _Process(float delta)
+    {
+        if (!freedMenu)
+        {
+            GetParent().GetNode("Menu").Free();
+            freedMenu = true;
+        }
     }
 
 //  // Called every frame. 'delta' is the elapsed time since the previous frame.

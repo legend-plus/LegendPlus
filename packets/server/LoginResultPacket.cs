@@ -15,7 +15,7 @@ namespace Packets
         };
 
 
-        public LoginResultPacket(int code, string user)
+        public LoginResultPacket(int code, string user = "")
         {
             responseCode = code;
             userId = user;

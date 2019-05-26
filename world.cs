@@ -91,6 +91,7 @@ public class world : Node2D
             entity.Call("SetTilePosition", new Vector2(pos_x, pos_y));
             entity.Call("SetFacing", entity_facing);
             entity.Call("SetSolid", solid);
+            entity.Call("SetUuid", entity_uuid);
             entityList.Add(entity);
             entities.Add(entity_uuid, entity);
             GetNode("World").AddChild(entity);
@@ -129,6 +130,20 @@ public class world : Node2D
             }
         }
         return false;
+    }
+
+    public KinematicBody2D getCollidedEntity(Vector2 position)
+    {
+        for (var i = 0; i < entityList.Count; i++)
+        {
+            var entity = (Entity) entityList[i];
+            GD.Print(position, " vs. ", entity.Position);
+            if (position.x == entity.Position.x && position.y == entity.Position.y && entity.solid)
+            {
+                return entity;
+            }
+        }
+        return null;
     }
 
 //  // Called every frame. 'delta' is the elapsed time since the previous frame.

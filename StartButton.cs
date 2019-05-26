@@ -20,7 +20,7 @@ public class StartButton : Button
 //  }
     public override void _Pressed()
     {
-        GD.Print("Beep.");
+        GD.Print("Join Game.");
         var loadingRes = GD.Load<PackedScene>("res://scenes/gameload.tscn");
         var node = loadingRes.Instance();
         node.SetName("GameLoader");

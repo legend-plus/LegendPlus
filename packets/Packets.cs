@@ -6,6 +6,7 @@ namespace Packets
     public class Packets {
         static Dictionary<short, string> packet_names = new Dictionary<short, string>
         {
+            [-8] = "entity_interact_packet",
             [-7] = "send_message_packet",
             [-6] = "move_and_face_packet",
             [-5] = "move_packet",
@@ -23,7 +24,8 @@ namespace Packets
             [7] = "chat_packet",
             [8] = "entity_packet",
             [9] = "entity_move_packet",
-            [10] = "invalidate_cache_packet"
+            [10] = "invalidate_cache_packet",
+            [11] = "dialogue_packet"
         };
 
         public static object[] decodeData(DataType[] schema, byte[] data)
@@ -76,11 +78,38 @@ namespace Packets
             return output;
         }
 
+        public static List<byte> encodeDataAsList(DataType[] schema, object[] data, List<byte> output = null)
+        {
+            var converter = new MiscUtil.Conversion.BigEndianBitConverter();
+            int dataLength = 0;
+            if (output == null)
+            {
+                output = new List<byte>();
+            }
+            for (var i = 0; i < schema.Length; i++)
+            {
+                if (schema[i] is DataVarying)
+                {
+                    var scheme = (DataVarying)schema[i];
+                    var schemeLength = scheme.encodeAsList(data[i], converter, output);
+                    dataLength += schemeLength;
+                }
+                else
+                {
+                    dataLength += schema[i].length;
+                    schema[i].encodeAsList(data[i], converter, output);
+                }
+            }
+            return output;
+        }
+
         public static Packet decode(short id, byte[] data)
         {
             string packet_name = packet_names[id];
             switch (packet_name)
             {
+                case "entity_interact_packet":
+                    return new EntityInteractPacket(data);
                 case "send_message_packet":
                     return new SendMessagePacket(data);
                 case "move_and_face_packet":
@@ -117,6 +146,8 @@ namespace Packets
                     return new EntityMovePacket(data);
                 case "invalidate_cache_packet":
                     return new InvalidateCachePacket(data);
+                case "dialogue_packet":
+                    return new DialoguePacket(data);
                 default:
                     return new NullPacket(data);
             }

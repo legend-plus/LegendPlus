@@ -88,6 +88,8 @@ public class gui : Control
                 Vector2 chunkPos = new Vector2((int) playerPos.x >> 3, (int) playerPos.y >> 3);
                 label = (Label) debug.GetNode("Chunk");
                 label.SetText("CHUNK=" + chunkPos.x.ToString() +  ", " + chunkPos.y.ToString());
+                label = (Label) debug.GetNode("Pos");
+                label.SetText("POS=" + playerPos.x.ToString() + "," + playerPos.y.ToString());
             }
         }
     }

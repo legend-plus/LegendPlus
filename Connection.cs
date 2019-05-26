@@ -16,7 +16,8 @@ public class Connection : Node2D
     bool disconnected = false;
 
     //string ip = "192.95.22.236";
-    string ip = "127.0.0.1";
+    //string ip = "127.0.0.1";
+    string ip = "10.1.0.152";
     int port = 21321;
 
     bool joined = false;
@@ -66,7 +67,7 @@ public class Connection : Node2D
             wrapped_client = new PacketPeerStream();
             wrapped_client.SetStreamPeer(client);
             var testPacket = new Packets.PingPacket("Hello There!");
-            sendPacket(testPacket);
+            //sendPacket(testPacket);
             //GD.Print(client.PutData(data));
             connected = true;
             GD.Print("Connected.");

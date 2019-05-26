@@ -49,7 +49,7 @@ public class discord : Node2D
         }
 	}
 	
-	private void _notification(int what)
+	private void _Notification(int what)
     {
         if (what == MainLoop.NotificationWmQuitRequest) {
             GD.Print("Thank you for playing Wing Commander.");

@@ -50,20 +50,26 @@ margin_bottom = 14.0
 text = "FPS="
 
 [node name="NetworkIn" type="Label" parent="Debug"]
-margin_top = 20.0
+margin_top = 14.0
 margin_right = 183.0
-margin_bottom = 34.0
+margin_bottom = 28.0
 text = "In=0/0bps"
 
 [node name="NetworkOut" type="Label" parent="Debug"]
-margin_top = 40.0
-margin_right = 40.0
-margin_bottom = 54.0
+margin_top = 28.0
+margin_right = 80.0
+margin_bottom = 42.0
 text = "OUT=0/0bps"
+
+[node name="Pos" type="Label" parent="Debug"]
+margin_top = 42.0
+margin_right = 54.0
+margin_bottom = 56.0
+text = "POS=0,0"
 
 [node name="Chunk" type="Label" parent="Debug"]
 margin_top = 56.0
-margin_right = 40.0
+margin_right = 54.0
 margin_bottom = 70.0
 text = "CHUNK="
 [connection signal="text_entered" from="LineEdit" to="LineEdit" method="_TextEnterred"]

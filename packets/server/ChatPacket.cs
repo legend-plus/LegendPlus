@@ -1,3 +1,5 @@
+using System;
+
 namespace Packets
 {
     public class ChatPacket : Packet {
@@ -21,12 +23,12 @@ namespace Packets
     
         public int y;
 
-        public ChatPacket(string chat_author, string chat_msg, string chat_userId, string chat_uuid, int chat_x, int chat_y)
+        public ChatPacket(string chat_author, string chat_msg, string chat_userId, Guid chat_uuid, int chat_x, int chat_y)
         {
             author = chat_author;
             msg = chat_msg;
             userId = chat_userId;
-            uuid = chat_uuid;
+            uuid = chat_uuid.ToString("N");
             x = chat_x;
             y = chat_y;
         }

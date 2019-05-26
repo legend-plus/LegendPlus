@@ -82,6 +82,35 @@ public class Player : KinematicBody2D
             debugNode.SetVisible(debugMode);
 
         }
+        if (Input.IsActionJustPressed("ui_interact"))
+        {
+            var interactTarget = new Vector2(pos);
+            switch (facing)
+            {
+                case 0:
+                    interactTarget.x -= 1;
+                    break;
+                case 1:
+                    interactTarget.y -= 1;
+                    break;
+                case 2:
+                    interactTarget.y += 1;
+                    break;
+                case 3:
+                    interactTarget.x += 1;
+                    break;
+            }
+            Entity interactEntity = (Entity) GetParent().GetParent().Call("getCollidedEntity", tileMap.MapToWorld(interactTarget));
+            if (interactEntity != null)
+            {
+                var interactEntityPacket = new EntityInteractPacket(0, Guid.Parse(interactEntity.uuid));
+                sendPacket(interactEntityPacket);
+            }
+            else
+            {
+                GD.Print("NO ENTITY AT ", interactTarget);
+            }
+        }
         //GD.Print(new object[] {pos, " vs.  ", target});
         if (!pos.Equals(target) && moving)
         {

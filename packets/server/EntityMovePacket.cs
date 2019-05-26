@@ -1,3 +1,5 @@
+using System;
+
 namespace Packets
 {
     public class EntityMovePacket : Packet {
@@ -17,11 +19,11 @@ namespace Packets
         public int facing;
         public string uuid;
 
-        public EntityMovePacket(int pos_x, int pos_y, int entity_facing, string entity_uuid )
+        public EntityMovePacket(int pos_x, int pos_y, int entity_facing, Guid entity_uuid )
         {
-            x = pos_y;
+            x = pos_x;
             y = pos_y;
-            uuid = entity_uuid;
+            uuid = entity_uuid.ToString("N");
             facing = entity_facing;
         }
         public EntityMovePacket(byte[] received_data)

@@ -1,3 +1,5 @@
+using System;
+
 namespace Packets
 {
     public class InvalidateCachePacket : Packet {
@@ -10,10 +12,11 @@ namespace Packets
 
         public string uuid;
 
-        public InvalidateCachePacket(string entity_uuid )
+        public InvalidateCachePacket(Guid entity_uuid )
         {
-            uuid = entity_uuid;
+            uuid = entity_uuid.ToString("N");
         }
+
         public InvalidateCachePacket(byte[] received_data)
         {
             var decoded = Packets.decodeData(schema, received_data);
