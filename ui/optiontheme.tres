@@ -1,0 +1,10 @@
+[gd_resource type="Theme" load_steps=2 format=2]
+
+[ext_resource path="res://ui/optionstyle.tres" type="StyleBox" id=1]
+
+[resource]
+Panel/styles/Panel = ExtResource( 1 )
+Panel/styles/panel = ExtResource( 1 )
+Panel/styles/panelf = ExtResource( 1 )
+Panel/styles/panelnc = ExtResource( 1 )
+PanelContainer/styles/panel = ExtResource( 1 )

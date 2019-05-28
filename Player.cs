@@ -121,7 +121,7 @@ public class Player : KinematicBody2D
                 var deltaPos = newPos - prevPos;
                 moveDelta = deltaPos / moveTime;
                 timeMoving = 0.0f;
-                GD.Print("Delta ", deltaPos);
+                //GD.Print("Delta ", deltaPos);
                 pos = target;
                 var movePacket = new MoveAndFacePacket((int) pos.x, (int) pos.y, (int) facing);
                 sendPacket(movePacket);
@@ -174,7 +174,7 @@ public class Player : KinematicBody2D
         }
         if (animation != prevAnim)
         {
-            GD.Print("Setting anim to " + animation);
+            //GD.Print("Setting anim to " + animation);
             playerSprite.SetAnimation(animation);
         }
         prevPos = pos;
@@ -200,7 +200,9 @@ public class Player : KinematicBody2D
 
     public void sendPacket(Packet packet)
     {
-        var client = (StreamPeerTCP) GetParent().GetNode("../../Connection").Call("getClient");
+        var client = (Connection) GetParent().GetNode("../../Connection");//.Call("getClient");
+        client.sendPacket(packet);
+        /*
         if (client.IsConnectedToHost())
         {
             var data = Packets.Packets.encode(packet);
@@ -209,7 +211,7 @@ public class Player : KinematicBody2D
                 gui.Call("recordSendPacket", data.Length);
             }
             client.PutData(data);
-        }
+        }*/
     }
 
     public Vector2 GetPos()

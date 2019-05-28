@@ -42,7 +42,7 @@ namespace Packets
             optionViews = (List<OptionView>)decoded[3];
             substitutions = (List<Substitution>)decoded[4];
             
-            Godot.GD.Print("TXT '", text, "' -", author, " _", sprite, "_");
+            /*Godot.GD.Print("TXT '", text, "' -", author, " _", sprite, "_");
             foreach (OptionView view in optionViews)
             {
                 Godot.GD.Print(view.uuid, " - ", view.text);
@@ -50,7 +50,7 @@ namespace Packets
             foreach (Substitution sub in substitutions)
             {
                 Godot.GD.Print(sub.ToString());
-            }
+            }*/
         }
 
         public override byte[] encode()

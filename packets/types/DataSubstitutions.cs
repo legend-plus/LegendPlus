@@ -1,6 +1,7 @@
 ﻿using LegendDialogue;
 using MiscUtil.Conversion;
 using System.Collections.Generic;
+using System;
 
 namespace Packets
 {
@@ -40,8 +41,8 @@ namespace Packets
         public override object decode(byte[] data, BigEndianBitConverter converter, int offset = 0)
         {
             List<Substitution> substitutions = new List<Substitution>();
-
             int substitutionsLength = (int)converter.ToUInt32(data, offset);
+            //Godot.GD.Print("subs Length: ", substitutionsLength, " data: ", BitConverter.ToString(data), " offset: ", offset);
             int pos = offset+4;
 
             while (pos < offset + substitutionsLength + 4)

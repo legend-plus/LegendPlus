@@ -6,6 +6,7 @@ namespace Packets
     public class Packets {
         static Dictionary<short, string> packet_names = new Dictionary<short, string>
         {
+            [-9] = "gui_option_packet",
             [-8] = "entity_interact_packet",
             [-7] = "send_message_packet",
             [-6] = "move_and_face_packet",
@@ -25,7 +26,8 @@ namespace Packets
             [8] = "entity_packet",
             [9] = "entity_move_packet",
             [10] = "invalidate_cache_packet",
-            [11] = "dialogue_packet"
+            [11] = "dialogue_packet",
+            [12] = "close_dialogue_packet"
         };
 
         public static object[] decodeData(DataType[] schema, byte[] data)
@@ -108,6 +110,8 @@ namespace Packets
             string packet_name = packet_names[id];
             switch (packet_name)
             {
+                case "gui_option_packet":
+                    return new GUIOptionPacket(data);
                 case "entity_interact_packet":
                     return new EntityInteractPacket(data);
                 case "send_message_packet":
@@ -148,6 +152,8 @@ namespace Packets
                     return new InvalidateCachePacket(data);
                 case "dialogue_packet":
                     return new DialoguePacket(data);
+                case "close_dialogue_packet":
+                    return new CloseDialoguePacket(data);
                 default:
                     return new NullPacket(data);
             }

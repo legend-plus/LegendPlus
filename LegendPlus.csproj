@@ -55,9 +55,13 @@
     <Compile Include="entities\Entity.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="scenes\Chat.cs" />
+    <Compile Include="scenes\DialogueNode.cs" />
+    <Compile Include="scenes\DialoguePanel.cs" />
     <Compile Include="scenes\GameFocus.cs" />
     <Compile Include="scenes\gui.cs" />
     <Compile Include="scenes\LineEdit.cs" />
+    <Compile Include="scenes\OptionBackground.cs" />
+    <Compile Include="scenes\OptionLabel.cs" />
     <Compile Include="scenes\Origin.cs" />
     <Compile Include="scenes\World.cs" />
     <Compile Include="world.cs" />

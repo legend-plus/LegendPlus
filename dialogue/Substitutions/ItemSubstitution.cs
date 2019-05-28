@@ -29,5 +29,10 @@ namespace LegendDialogue
 
             return output;
         }
+
+        public override string ToString()
+        {
+            return this.item.GetName();
+        }
     }
 }

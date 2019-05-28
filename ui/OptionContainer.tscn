@@ -1,0 +1,32 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://ui/optiontheme.tres" type="Theme" id=1]
+[ext_resource path="res://scenes/OptionBackground.cs" type="Script" id=2]
+[ext_resource path="res://ui/guifont.tres" type="DynamicFont" id=3]
+
+[node name="OptionContainer" type="VBoxContainer"]
+margin_top = 149.0
+margin_right = 710.0
+margin_bottom = 202.0
+
+[node name="Container" type="HBoxContainer" parent="."]
+margin_right = 710.0
+margin_bottom = 27.0
+rect_min_size = Vector2( 710, 0 )
+
+[node name="OptionBackground" type="PanelContainer" parent="Container"]
+margin_right = 710.0
+margin_bottom = 27.0
+rect_min_size = Vector2( 710, 0 )
+theme = ExtResource( 1 )
+script = ExtResource( 2 )
+
+[node name="Option" type="Label" parent="Container/OptionBackground"]
+margin_left = 8.0
+margin_top = 2.0
+margin_right = 708.0
+margin_bottom = 25.0
+custom_fonts/font = ExtResource( 3 )
+custom_colors/font_color = Color( 0.411765, 0.278431, 0.156863, 1 )
+text = "TEXT HERE"
+autowrap = true

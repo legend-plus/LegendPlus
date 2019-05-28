@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://characters/antonio/avatar.png" type="Texture" id=1]
+
+[node name="Avatar" type="TextureRect"]
+margin_right = 34.0
+margin_bottom = 34.0
+rect_min_size = Vector2( 34, 34 )
+texture = ExtResource( 1 )
+stretch_mode = 1

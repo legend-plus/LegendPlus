@@ -185,6 +185,20 @@ public class Connection : Node2D
                 GD.Print(parsed_packet.uuid, " Invalidated.");
                 GetNode("../WorldScene").Call("hideEntity", parsed_packet.uuid);
             }
+            else if (packet is DialoguePacket)
+            {
+                DialoguePacket parsed_packet = (DialoguePacket) packet;
+                GD.Print("Got dialogue \"", parsed_packet.text, "\"");
+                DialoguePanel dialoguePanel = (DialoguePanel) GetNode("../GUI/Window/DialoguePanel");
+                dialoguePanel.SetDialogue(parsed_packet.text, parsed_packet.author, parsed_packet.sprite, parsed_packet.substitutions, parsed_packet.optionViews);
+            }
+            else if (packet is CloseDialoguePacket)
+            {
+                CloseDialoguePacket parsed_packet = (CloseDialoguePacket) packet;
+                DialoguePanel dialoguePanel = (DialoguePanel) GetNode("../GUI/Window/DialoguePanel");
+                dialoguePanel.CloseDialogue(parsed_packet.guid);
+                //dialoguePanel.SetDialogue(parsed_packet.text, parsed_packet.author, parsed_packet.sprite, parsed_packet.substitutions, parsed_packet.optionViews);
+            }
         } else {
             var testPacket = new Packets.PingPacket("Hello There!");
             //sendPacket(testPacket);
@@ -201,6 +215,7 @@ public class Connection : Node2D
                 gui.Call("recordSendPacket", data.Length);
             }
             client.PutData(data);
+            GD.Print("Sent packet ID ", packet.id, " \"", packet.name, "\"");
         }
     }
 

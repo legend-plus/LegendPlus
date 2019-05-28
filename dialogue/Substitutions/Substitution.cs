@@ -14,6 +14,7 @@ namespace LegendDialogue
 
         public static Substitution DecodeSubstitution(byte[] data, BigEndianBitConverter converter, int offset = 0)
         {
+            //Godot.GD.Print("Decoding from ", BitConverter.ToString(data, offset));
             short subId = converter.ToInt16(data, offset);
             if (subId == 0)
             {
