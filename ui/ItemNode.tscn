@@ -1,0 +1,57 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://ui/optiontheme.tres" type="Theme" id=1]
+[ext_resource path="res://ui/ItemNode.cs" type="Script" id=2]
+[ext_resource path="res://ui/ItemBox.cs" type="Script" id=3]
+[ext_resource path="res://ui/ItemLabel.cs" type="Script" id=4]
+[ext_resource path="res://items/sprites/unknown.tres" type="Texture" id=5]
+[ext_resource path="res://ui/guifont.tres" type="DynamicFont" id=6]
+[ext_resource path="res://ui/seperator.png" type="Texture" id=7]
+
+[node name="ItemNode" type="PanelContainer"]
+margin_right = 365.0
+margin_bottom = 42.0
+theme = ExtResource( 1 )
+script = ExtResource( 2 )
+
+[node name="ItemBox" type="VBoxContainer" parent="."]
+margin_left = 8.0
+margin_top = 2.0
+margin_right = 363.0
+margin_bottom = 40.0
+script = ExtResource( 3 )
+
+[node name="ItemLabel" type="HSplitContainer" parent="ItemBox"]
+margin_right = 355.0
+margin_bottom = 32.0
+dragger_visibility = 1
+script = ExtResource( 4 )
+
+[node name="Sprite" type="TextureRect" parent="ItemBox/ItemLabel"]
+margin_right = 32.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+texture = ExtResource( 5 )
+stretch_mode = 1
+
+[node name="Name" type="Label" parent="ItemBox/ItemLabel"]
+margin_left = 44.0
+margin_top = 4.0
+margin_right = 355.0
+margin_bottom = 27.0
+custom_fonts/font = ExtResource( 6 )
+text = "ITEM NAME"
+
+[node name="Divider" type="TextureRect" parent="ItemBox"]
+margin_top = 36.0
+margin_right = 355.0
+margin_bottom = 38.0
+texture = ExtResource( 7 )
+stretch_mode = 2
+
+[node name="Description" type="Label" parent="ItemBox"]
+visible = false
+margin_top = 42.0
+margin_right = 355.0
+margin_bottom = 56.0
+custom_fonts/font = ExtResource( 6 )

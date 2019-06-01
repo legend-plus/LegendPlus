@@ -10,10 +10,17 @@ namespace LegendItems
         public List<Item> items = new List<Item>();
         
         public Guid guid;
+        
+        public InventoryPanel panel = null;
 
         public Inventory(Guid guid)
         {
             this.guid = guid;
+        }
+
+        public void SetPanel(InventoryPanel panel)
+        {
+            this.panel = panel;
         }
 
         public Inventory()
@@ -23,6 +30,10 @@ namespace LegendItems
         public void AddItem(Item item)
         {
             items.Add(item);
+            if (panel != null)
+            {
+                panel.AddItem(item);
+            }
         }
     }
 }

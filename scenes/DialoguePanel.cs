@@ -77,9 +77,6 @@ public class DialoguePanel : PanelContainer
             optionText.SetText(view.text);
             GetNode("Dialogue").AddChild(instance);
         }
-
-        ((Control) GetParent()).SetVisible(true);
-        SetVisible(true);
         unlocked = true;
     }
 

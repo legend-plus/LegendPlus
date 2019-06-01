@@ -64,6 +64,10 @@
     <Compile Include="scenes\OptionLabel.cs" />
     <Compile Include="scenes\Origin.cs" />
     <Compile Include="scenes\World.cs" />
+    <Compile Include="ui\InventoryPanel.cs" />
+    <Compile Include="ui\ItemBox.cs" />
+    <Compile Include="ui\ItemLabel.cs" />
+    <Compile Include="ui\ItemNode.cs" />
     <Compile Include="ui\Window.cs" />
     <Compile Include="world.cs" />
     <Reference Include="MiscUtil">

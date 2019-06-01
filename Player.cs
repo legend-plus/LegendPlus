@@ -117,6 +117,17 @@ public class Player : KinematicBody2D
                 GD.Print("NO ENTITY AT ", interactTarget);
             }
         }
+        if (Input.IsActionJustPressed("ui_open_inventory"))
+        {
+            Window window = (Window) GetNode("../../../GUI/Window");
+            InventoryPanel inventoryPanel = window.OpenInventoryPanel();
+            inventoryPanel.SetInventory(inventory);
+        }
+        if (Input.IsActionJustPressed("ui_close"))
+        {
+            Window window = (Window) GetNode("../../../GUI/Window");
+            window.ClosePanels();
+        }
         //GD.Print(new object[] {pos, " vs.  ", target});
         if (!pos.Equals(target) && moving)
         {

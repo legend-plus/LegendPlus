@@ -1,0 +1,62 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://ui/Panel.tres" type="StyleBox" id=1]
+[ext_resource path="res://ui/InventoryPanel.cs" type="Script" id=2]
+[ext_resource path="res://ui/guifont.tres" type="DynamicFont" id=3]
+[ext_resource path="res://ui/dialoguestyle.tres" type="StyleBox" id=4]
+
+[node name="InventoryPanel" type="PanelContainer"]
+margin_left = 200.0
+margin_top = 50.0
+margin_right = 850.0
+margin_bottom = 550.0
+custom_styles/panel = ExtResource( 1 )
+script = ExtResource( 2 )
+
+[node name="Side" type="HSplitContainer" parent="."]
+margin_left = 20.0
+margin_top = 10.0
+margin_right = 630.0
+margin_bottom = 507.0
+split_offset = 340
+dragger_visibility = 1
+
+[node name="Items" type="VBoxContainer" parent="Side"]
+margin_right = 390.0
+margin_bottom = 497.0
+
+[node name="Header" type="Label" parent="Side/Items"]
+margin_right = 390.0
+margin_bottom = 23.0
+custom_fonts/font = ExtResource( 3 )
+text = "TEXT"
+
+[node name="ItemScroller" type="ScrollContainer" parent="Side/Items"]
+margin_top = 27.0
+margin_right = 390.0
+margin_bottom = 497.0
+rect_min_size = Vector2( 0, 470 )
+
+[node name="ItemPanel" type="PanelContainer" parent="Side/Items/ItemScroller"]
+margin_right = 375.0
+margin_bottom = 450.0
+rect_min_size = Vector2( 375, 450 )
+custom_styles/panel = ExtResource( 4 )
+
+[node name="ItemContainer" type="VBoxContainer" parent="Side/Items/ItemScroller/ItemPanel"]
+margin_left = 4.0
+margin_top = 8.0
+margin_right = 373.0
+margin_bottom = 448.0
+custom_constants/separation = 5
+
+[node name="Equipment" type="VBoxContainer" parent="Side"]
+margin_left = 402.0
+margin_right = 610.0
+margin_bottom = 497.0
+
+[node name="Header" type="Label" parent="Side/Equipment"]
+margin_right = 208.0
+margin_bottom = 23.0
+custom_fonts/font = ExtResource( 3 )
+text = "EQUIPMENT"
