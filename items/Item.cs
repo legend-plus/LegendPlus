@@ -99,29 +99,29 @@ namespace LegendItems
             return output;
         }
 
-        public static Item DecodeItem(byte[] data, BigEndianBitConverter converter)
+         public static Item DecodeItem(byte[] data, BigEndianBitConverter converter, int offset = 0)
         {
-            int spriteLength = converter.ToInt32(data, 0);
-            string sprite = System.Text.Encoding.UTF8.GetString(data, 4, spriteLength);
+            int spriteLength = converter.ToInt32(data, offset);
+            string sprite = System.Text.Encoding.UTF8.GetString(data, 4 + offset, spriteLength);
 
-            int nameLength = converter.ToInt32(data, 4 + spriteLength);
-            string name = System.Text.Encoding.UTF8.GetString(data, 8 + spriteLength, nameLength);
+            int nameLength = converter.ToInt32(data, 4 + spriteLength + offset);
+            string name = System.Text.Encoding.UTF8.GetString(data, 8 + spriteLength + offset, nameLength);
 
-            int descriptionLength = converter.ToInt32(data, 8 + spriteLength + nameLength);
-            string description = System.Text.Encoding.UTF8.GetString(data, 12 + spriteLength + nameLength, descriptionLength);
+            int descriptionLength = converter.ToInt32(data, 8 + spriteLength + nameLength + offset);
+            string description = System.Text.Encoding.UTF8.GetString(data, 12 + spriteLength + nameLength + offset, descriptionLength);
 
-            int typeLength = converter.ToInt32(data, 12 + spriteLength + nameLength + descriptionLength);
-            string type = System.Text.Encoding.UTF8.GetString(data, 16 + spriteLength + nameLength + descriptionLength, typeLength);
+            int typeLength = converter.ToInt32(data, 12 + spriteLength + nameLength + descriptionLength + offset);
+            string type = System.Text.Encoding.UTF8.GetString(data, 16 + spriteLength + nameLength + descriptionLength + offset, typeLength);
 
             if (type == "weapon")
             {
-                int weaponClassLength = converter.ToInt32(data, 16 + spriteLength + nameLength + descriptionLength + typeLength);
-                string weaponClass = System.Text.Encoding.UTF8.GetString(data, 20 + spriteLength + nameLength + descriptionLength + typeLength, weaponClassLength);
+                int weaponClassLength = converter.ToInt32(data, 16 + spriteLength + nameLength + descriptionLength + typeLength + offset);
+                string weaponClass = System.Text.Encoding.UTF8.GetString(data, 20 + spriteLength + nameLength + descriptionLength + typeLength + offset, weaponClassLength);
 
-                double damage = converter.ToDouble(data, 20 + spriteLength + nameLength + descriptionLength + typeLength + weaponClassLength);
+                double damage = converter.ToDouble(data, 20 + spriteLength + nameLength + descriptionLength + typeLength + weaponClassLength + offset);
 
-                int damageTypeLength = converter.ToInt32(data, 28 + spriteLength + nameLength + descriptionLength + typeLength + weaponClassLength);
-                string damageType = System.Text.Encoding.UTF8.GetString(data, 32 + spriteLength + nameLength + descriptionLength + typeLength + weaponClassLength, damageTypeLength);
+                int damageTypeLength = converter.ToInt32(data, 28 + spriteLength + nameLength + descriptionLength + typeLength + weaponClassLength + offset);
+                string damageType = System.Text.Encoding.UTF8.GetString(data, 32 + spriteLength + nameLength + descriptionLength + typeLength + weaponClassLength + offset, damageTypeLength);
 
                 return new Weapon(null, sprite, name, description, type, weaponClass, damage, damageType);
             }

@@ -4,6 +4,7 @@ using Packets;
 using System.Collections.Generic;
 using System.Reflection;
 using Godot.Collections;
+using LegendItems;
 public class Connection : Node2D
 {
     // Declare member variables here. Examples:
@@ -127,14 +128,13 @@ public class Connection : Node2D
                         GetParent().AddChild(gui);
                         //node.AddChild(gui);
                         GetParent().GetNode("GameLoader").Free();
-                        var playerSpriteScene = (PackedScene) node.Call("getSprite", "rowan");
-                        var playerSprite = (AnimatedSprite) playerSpriteScene.Instance();
-                        playerSprite.SetName("PlayerSprite");
-                        //playerSprite.SetAnimation("down");
-                        node.GetNode("World/Player").AddChild(playerSprite);
+                        //var playerSpriteScene = (PackedScene) node.Call("getSprite", "rowan");
+                        //var playerSprite = (AnimatedSprite) playerSpriteScene.Instance();
+                        //playerSprite.SetName("PlayerSprite");
+                        //node.GetNode("World/Player").AddChild(playerSprite);
                         //playerSprite.Position = ((KinematicBody2D) node.GetNode("Player")).Position;
                         //playerSprite.Visible = true;
-                        GD.Print(playerSprite);
+                        //GD.Print(playerSprite);
                         joined = true;
                     }
                 }
@@ -189,7 +189,9 @@ public class Connection : Node2D
             {
                 DialoguePacket parsed_packet = (DialoguePacket) packet;
                 GD.Print("Got dialogue \"", parsed_packet.text, "\"");
-                DialoguePanel dialoguePanel = (DialoguePanel) GetNode("../GUI/Window/DialoguePanel");
+                Window window = (Window) GetNode("../GUI/Window");
+                window.OpenDialoguePanel();
+                DialoguePanel dialoguePanel = window.OpenDialoguePanel(); //(DialoguePanel) GetNode("../GUI/Window/DialoguePanel");
                 dialoguePanel.SetDialogue(parsed_packet.text, parsed_packet.author, parsed_packet.sprite, parsed_packet.substitutions, parsed_packet.optionViews);
             }
             else if (packet is CloseDialoguePacket)
@@ -198,6 +200,33 @@ public class Connection : Node2D
                 DialoguePanel dialoguePanel = (DialoguePanel) GetNode("../GUI/Window/DialoguePanel");
                 dialoguePanel.CloseDialogue(parsed_packet.guid);
                 //dialoguePanel.SetDialogue(parsed_packet.text, parsed_packet.author, parsed_packet.sprite, parsed_packet.substitutions, parsed_packet.optionViews);
+            }
+            else if (packet is PlayerDataPacket)
+            {
+                PlayerDataPacket parsed_packet = (PlayerDataPacket) packet;
+                var player = (Player) GetNode("../WorldScene/World/Player");
+                player.SetUuid(parsed_packet.guid);
+                if (player.GetNodeOrNull("PlayerSprite") != null)
+                {
+                    player.GetNodeOrNull("PlayerSprite").Free();
+                }
+                var playerSpriteScene = (PackedScene) GetNode("../WorldScene").Call("getSprite", parsed_packet.sprite);
+                var playerSprite = (AnimatedSprite) playerSpriteScene.Instance();
+                playerSprite.SetName("PlayerSprite");
+                player.AddChild(playerSprite);
+            }
+            else if (packet is InventoryPacket)
+            {
+                InventoryPacket parsed_packet = (InventoryPacket) packet;
+                var player = (Player) GetNode("../WorldScene/World/Player");
+                if (player.guid == parsed_packet.inventory.guid)
+                {
+                    player.inventory = parsed_packet.inventory;
+                    foreach (Item item in player.inventory.items)
+                    {
+                        GD.Print("Item: ", item.GetName(), " \"", item.GetDescription(), "\"");
+                    }
+                }
             }
         } else {
             var testPacket = new Packets.PingPacket("Hello There!");

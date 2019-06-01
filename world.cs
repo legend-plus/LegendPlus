@@ -30,6 +30,7 @@ public class world : Node2D
         sprites["rowan"] = GD.Load<PackedScene>("res://characters/rowan/rowan.tscn");
         sprites["orange_cat"] = GD.Load<PackedScene>("res://characters/orange_cat/orange_cat.tscn");
         sprites["antonio"] = GD.Load<PackedScene>("res://characters/antonio/antonio.tscn");
+        sprites["colton"] = GD.Load<PackedScene>("res://characters/colton/colton.tscn");
         baseEntity = GD.Load<PackedScene>("res://entities/Entity.tscn");
     }
 

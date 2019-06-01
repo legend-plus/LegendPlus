@@ -27,7 +27,10 @@ namespace Packets
             [9] = "entity_move_packet",
             [10] = "invalidate_cache_packet",
             [11] = "dialogue_packet",
-            [12] = "close_dialogue_packet"
+            [12] = "close_dialogue_packet",
+            [13] = "add_item_packet",
+            [14] = "inventory_packet",
+            [15] = "player_data_packet"
         };
 
         public static object[] decodeData(DataType[] schema, byte[] data)
@@ -154,6 +157,12 @@ namespace Packets
                     return new DialoguePacket(data);
                 case "close_dialogue_packet":
                     return new CloseDialoguePacket(data);
+                case "add_item_packet":
+                    return new AddItemPacket(data);
+                case "inventory_packet":
+                    return new InventoryPacket(data);
+                case "player_data_packet":
+                    return new PlayerDataPacket(data);
                 default:
                     return new NullPacket(data);
             }

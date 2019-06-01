@@ -33,6 +33,7 @@ public class discord : Node2D
             accessToken = oauth2Token.AccessToken;
         });
         UpdateActivity();
+        
     }
 
 //  // Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -49,7 +50,7 @@ public class discord : Node2D
         }
 	}
 	
-	private void _Notification(int what)
+	public override void _Notification(int what)
     {
         if (what == MainLoop.NotificationWmQuitRequest) {
             GD.Print("Thank you for playing Wing Commander.");

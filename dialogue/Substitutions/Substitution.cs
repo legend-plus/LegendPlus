@@ -18,6 +18,7 @@ namespace LegendDialogue
             short subId = converter.ToInt16(data, offset);
             if (subId == 0)
             {
+                //Godot.GD.Print(BitConverter.ToString(data, offset));
                 DataString dataString = new DataString();
                 string text = (string) dataString.decode(data, converter, offset + 2);
                 return new StringSubstitution(text);

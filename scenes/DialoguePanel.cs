@@ -17,7 +17,10 @@ public class DialoguePanel : PanelContainer
     public bool unlocked = false;
     public override void _Ready()
     {
+        avatars["rowan_avatar"] = GD.Load<StreamTexture>("res://characters/rowan/avatar.tres");
         avatars["antonio_avatar"] = GD.Load<StreamTexture>("res://characters/antonio/avatar.tres");
+        avatars["orange_cat_avatar"] = GD.Load<StreamTexture>("res://characters/orange_cat/avatar.tres");
+        avatars["colton_avatar"] = GD.Load<StreamTexture>("res://characters/colton/avatar.tres");
         optionContainer = GD.Load<PackedScene>("res://ui/OptionContainer.tscn");
     }
 

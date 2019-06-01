@@ -64,6 +64,7 @@
     <Compile Include="scenes\OptionLabel.cs" />
     <Compile Include="scenes\Origin.cs" />
     <Compile Include="scenes\World.cs" />
+    <Compile Include="ui\Window.cs" />
     <Compile Include="world.cs" />
     <Reference Include="MiscUtil">
       <HintPath>miscutil\MiscUtil.dll</HintPath>

@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using Packets;
+using LegendItems;
 
 public class Player : KinematicBody2D
 {
@@ -28,6 +29,11 @@ public class Player : KinematicBody2D
 
     Vector2 prevPos = new Vector2(0, 0);
     string prevAnim = "";
+
+    string uuid;
+    public Guid guid;
+
+    public Inventory inventory;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -217,6 +223,12 @@ public class Player : KinematicBody2D
     public Vector2 GetPos()
     {
         return pos;
+    }
+
+    public void SetUuid(Guid guid)
+    {
+        uuid = guid.ToString("N");
+        this.guid = guid;
     }
 
 //  // Called every frame. 'delta' is the elapsed time since the previous frame.
