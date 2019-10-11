@@ -30,7 +30,8 @@ namespace Packets
             [12] = "close_dialogue_packet",
             [13] = "add_item_packet",
             [14] = "inventory_packet",
-            [15] = "player_data_packet"
+            [15] = "player_data_packet",
+            [16] = "modify_item_packet"
         };
 
         public static object[] decodeData(DataType[] schema, byte[] data)
@@ -163,6 +164,8 @@ namespace Packets
                     return new InventoryPacket(data);
                 case "player_data_packet":
                     return new PlayerDataPacket(data);
+                case "modify_item_packet":
+                    return new ModifyItemPacket(data);
                 default:
                     return new NullPacket(data);
             }

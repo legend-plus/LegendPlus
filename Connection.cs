@@ -17,8 +17,8 @@ public class Connection : Node2D
     bool disconnected = false;
 
     //string ip = "192.95.22.236";
-    //string ip = "127.0.0.1";
-    string ip = "10.1.0.152";
+    string ip = "127.0.0.1";
+    //string ip = "10.1.0.152";
     int port = 21321;
 
     bool joined = false;
@@ -226,6 +226,26 @@ public class Connection : Node2D
                     {
                         GD.Print("Item: ", item.GetName(), " \"", item.GetDescription(), "\"");
                     }
+                }
+            }
+            else if (packet is AddItemPacket)
+            {
+                AddItemPacket parsed_packet = (AddItemPacket) packet;
+                var player = (Player) GetNode("../WorldScene/World/Player");
+                if (player.guid == parsed_packet.guid)
+                {
+                    //TODO: Make use of indices.
+                    player.inventory.AddItem(parsed_packet.item, true);
+                }
+            }
+            else if (packet is ModifyItemPacket)
+            {
+                ModifyItemPacket parsed_packet = (ModifyItemPacket) packet;
+                var player = (Player) GetNode("../WorldScene/World/Player");
+                if (player.guid == parsed_packet.guid)
+                {
+                    //TODO: Make use of indices.
+                    player.inventory.UpdateItem(parsed_packet.item, parsed_packet.index);
                 }
             }
         } else {

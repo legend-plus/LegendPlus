@@ -58,6 +58,8 @@ public class InventoryPanel : PanelContainer
         }
         Label itemName = (Label) itemNode.GetNode("ItemBox/ItemLabel/Name");
         itemName.SetText(item.GetName());
+        Label itemQuantity = (Label) itemNode.GetNode("ItemBox/ItemLabel/Amount");
+        itemQuantity.SetText("x" + item.GetQuantity());
         itemContainer.AddChild(itemNode);
     }
 
